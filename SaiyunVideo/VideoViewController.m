@@ -1061,7 +1061,7 @@ singleton_implementation(VideoViewController)
 {
     //播放结束时，如果有测试则进入测试界面，没有的话直接进入下一个课程
     NSLog(@"视频播放完成");
-    
+    self.subtitlesLabel.text = nil;
     [[Tool SharedInstance]showtoast:@"正在跳转下一个课程，请耐心等待喔~"];
     NSInteger playtime = CMTimeGetSeconds(self.player.currentTime);
     NSString *playtimestr = [NSString stringWithFormat:@"%ld",(long)playtime];
