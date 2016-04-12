@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9531" systemVersion="15A284" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MenuViewController">
+            <connections>
+                <outlet property="MenuHeaderView" destination="ddQ-fP-SJr" id="4m0-xw-4UL"/>
+                <outlet property="MenuTableview" destination="2gS-ef-4iF" id="QnK-Js-YRs"/>
+                <outlet property="userHeaderBtn" destination="NlI-LC-CG2" id="CsI-p5-d3g"/>
+                <outlet property="userLabel" destination="iXa-dH-LkM" id="FIu-5i-p10"/>
+                <outlet property="userNameLabel" destination="iXa-dH-LkM" id="4Dp-In-wcq"/>
+                <outlet property="userphoto" destination="NlI-LC-CG2" id="RFg-eN-pDy"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ddQ-fP-SJr">
+                    <rect key="frame" x="0.0" y="44" width="600" height="250"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NlI-LC-CG2">
+                            <rect key="frame" x="240" y="65" width="120" height="120"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="150" id="jKY-ob-zWY"/>
+                                <constraint firstAttribute="width" constant="150" id="rym-T8-kIH"/>
+                            </constraints>
+                            <state key="normal" backgroundImage="default_point@3x">
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="userHeaderButton:" destination="-1" eventType="touchUpInside" id="tKU-G4-uwW"/>
+                            </connections>
+                        </button>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="用户名" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iXa-dH-LkM">
+                            <rect key="frame" x="275" y="195" width="51" height="21"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" red="0.43529411759999997" green="0.4431372549" blue="0.47450980390000003" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="250" id="3fF-aI-bWL"/>
+                        <constraint firstItem="iXa-dH-LkM" firstAttribute="top" secondItem="NlI-LC-CG2" secondAttribute="bottom" constant="10" id="GbT-Oq-Jum"/>
+                        <constraint firstAttribute="centerX" secondItem="iXa-dH-LkM" secondAttribute="centerX" id="eE7-yR-I0D"/>
+                        <constraint firstAttribute="centerY" secondItem="NlI-LC-CG2" secondAttribute="centerY" id="k1h-zn-rQ2"/>
+                        <constraint firstAttribute="centerX" secondItem="NlI-LC-CG2" secondAttribute="centerX" id="uzY-cb-Xuw"/>
+                    </constraints>
+                </view>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="2gS-ef-4iF">
+                    <rect key="frame" x="0.0" y="294" width="600" height="306"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                </tableView>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Iu0-u9-09c">
+                    <rect key="frame" x="7" y="553" width="586" height="40"/>
+                    <color key="backgroundColor" red="0.24456934556834692" green="0.66666666666666663" blue="0.64230741785820344" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="40" id="Qb9-Qc-rSu"/>
+                    </constraints>
+                    <state key="normal" title="退出">
+                        <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="ExitButton:" destination="-1" eventType="touchUpInside" id="xXE-AY-SkL"/>
+                    </connections>
+                </button>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="2gS-ef-4iF" secondAttribute="trailing" id="BEf-lb-38t"/>
+                <constraint firstAttribute="bottom" secondItem="Iu0-u9-09c" secondAttribute="bottom" constant="7" id="CCX-BM-rQ4"/>
+                <constraint firstItem="Iu0-u9-09c" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="7" id="CKl-re-wkb"/>
+                <constraint firstItem="2gS-ef-4iF" firstAttribute="top" secondItem="ddQ-fP-SJr" secondAttribute="bottom" id="R7S-5d-t0y"/>
+                <constraint firstAttribute="trailing" secondItem="ddQ-fP-SJr" secondAttribute="trailing" id="aHb-Xa-MJN"/>
+                <constraint firstItem="ddQ-fP-SJr" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="clo-gE-JNQ"/>
+                <constraint firstAttribute="bottom" secondItem="2gS-ef-4iF" secondAttribute="bottom" id="hTZ-Gc-Uey"/>
+                <constraint firstAttribute="trailing" secondItem="Iu0-u9-09c" secondAttribute="trailing" constant="7" id="reT-SW-jLa"/>
+                <constraint firstItem="ddQ-fP-SJr" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="w06-eH-oI3"/>
+                <constraint firstItem="2gS-ef-4iF" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="zu8-Dg-rOK"/>
+            </constraints>
+            <point key="canvasLocation" x="241" y="309"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="default_point@3x" width="46" height="46"/>
+    </resources>
+</document>

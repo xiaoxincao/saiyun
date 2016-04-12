@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9531" systemVersion="15A284" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TestResultViewController">
+            <connections>
+                <outlet property="AgainBtnpro" destination="Q0C-RG-hJg" id="8gb-r1-KUM"/>
+                <outlet property="NextBtnpro" destination="Y60-qu-APO" id="iE4-vg-k2z"/>
+                <outlet property="Testresulttableview" destination="LCG-Rt-ZEX" id="lGl-uV-ftE"/>
+                <outlet property="Texttipslab" destination="fUK-zY-16d" id="ych-vl-RVY"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" alwaysBounceVertical="YES" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="LCG-Rt-ZEX">
+                    <rect key="frame" x="0.0" y="58" width="600" height="452"/>
+                    <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
+                </tableView>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Q0C-RG-hJg">
+                    <rect key="frame" x="10" y="560" width="580" height="30"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="30" id="iGB-Ct-eO2"/>
+                    </constraints>
+                    <state key="normal" title="重新观看"/>
+                    <connections>
+                        <action selector="AgainBtnAct:" destination="-1" eventType="touchUpInside" id="jm6-cg-Dci"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Y60-qu-APO">
+                    <rect key="frame" x="10" y="520" width="580" height="30"/>
+                    <color key="backgroundColor" red="0.13986626469999999" green="0.54747728149999997" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="30" id="Ocg-XF-arM"/>
+                    </constraints>
+                    <state key="normal" title="下一课件">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="NextBtnAct:" destination="-1" eventType="touchUpInside" id="18O-eW-tbQ"/>
+                    </connections>
+                </button>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="亲，考试没有通过喔~" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fUK-zY-16d">
+                    <rect key="frame" x="0.0" y="0.0" width="600" height="30"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="30" id="cdp-fv-4M9"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <color key="textColor" red="1" green="0.15876648900000001" blue="0.1451687015" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="Q0C-RG-hJg" firstAttribute="top" secondItem="Y60-qu-APO" secondAttribute="bottom" constant="10" id="4fB-XY-TJO"/>
+                <constraint firstItem="Y60-qu-APO" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="10" id="7Tm-Tj-Tit"/>
+                <constraint firstItem="fUK-zY-16d" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="Egg-1F-UAx"/>
+                <constraint firstItem="Q0C-RG-hJg" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="10" id="IUP-hO-3QI"/>
+                <constraint firstAttribute="trailing" secondItem="Y60-qu-APO" secondAttribute="trailing" constant="10" id="OGN-P3-hw2"/>
+                <constraint firstAttribute="trailing" secondItem="fUK-zY-16d" secondAttribute="trailing" id="RE9-e4-jWK"/>
+                <constraint firstItem="fUK-zY-16d" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="Zfa-3S-dRY"/>
+                <constraint firstAttribute="bottom" secondItem="Q0C-RG-hJg" secondAttribute="bottom" constant="10" id="dfb-b3-ie4"/>
+                <constraint firstAttribute="trailing" secondItem="Q0C-RG-hJg" secondAttribute="trailing" constant="10" id="kSV-mP-0eb"/>
+                <constraint firstItem="LCG-Rt-ZEX" firstAttribute="top" secondItem="fUK-zY-16d" secondAttribute="bottom" id="nTy-44-wjv"/>
+                <constraint firstItem="Y60-qu-APO" firstAttribute="top" secondItem="LCG-Rt-ZEX" secondAttribute="bottom" constant="10" id="thO-dF-MO8"/>
+                <constraint firstAttribute="trailing" secondItem="LCG-Rt-ZEX" secondAttribute="trailing" id="yE5-sa-IO1"/>
+                <constraint firstItem="LCG-Rt-ZEX" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="zH3-CE-P58"/>
+            </constraints>
+        </view>
+    </objects>
+</document>

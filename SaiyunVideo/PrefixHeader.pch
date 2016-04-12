@@ -1,0 +1,157 @@
+//
+//  PrefixHeader.pch
+//  SaiyunVideo
+//
+//  Created by cying on 15/11/19.
+//  Copyright (c) 2015年 cying. All rights reserved.
+//
+
+#ifndef SaiyunVideo_PrefixHeader_pch
+#define SaiyunVideo_PrefixHeader_pch
+
+
+#import "AppDelegate.h"
+
+//第三方库
+
+#import "Reachability.h"
+#import "MMDrawerController.h"
+#import "UIViewController+MMDrawerController.h"
+#import "AFNetworking.h"
+#import "MBProgressHUD.h"
+#import "Reachability.h"
+#import "MJExtension.h"
+#import "JKCountDownButton.h"
+#import <MediaPlayer/MediaPlayer.h>
+#import "SDImageCache.h"
+#import "Masonry.h"
+#import "UIImageView+WebCache.h"
+
+//控制器
+#import "SettingTableViewController.h"
+#import "TestResultViewController.h"
+#import "TestViewController.h"
+#import "MenuViewController.h"
+#import "VideoViewController.h"
+#import "LogInViewController.h"
+#import "RegisterViewController.h"
+#import "FirstViewController.h"
+
+#import "Tool.h"
+#import "NetworkSingleton.h"
+
+
+#define kScreenWidth  [UIScreen mainScreen].bounds.size.width
+#define kScreenHeight [UIScreen mainScreen].bounds.size.height
+#define kScreenBounds ([UIScreen mainScreen].bounds)
+
+
+
+////登录
+////#define Portt @"http://192.168.1.210"
+//#define Portt @"http://192.168.1.88"
+////其他的都是这个·
+//#define Port @"http://192.168.1.60:8080"
+//#define PersonPort @"http://192.168.1.99"
+//#define Video_Path @"http://192.168.1.60:5080/Mooc/"//视频播放路径前缀
+
+#define Portt @"http://www.easyrun.com.cn:8899"
+#define Port @"http://www.easyrun.com.cn:8899"
+#define PersonPort @"http://www.easyrun.com.cn:8899"
+#define Video_Path @"http://www.easyrun.com.cn:5080/Mooc/"
+#define Subtitle_Path @"http://www.easyrun.com.cn:5080/Mooc/caption/"//视频字幕加载路径
+
+
+#pragma mark ------------------- 注册登录！！！
+/**用户注册*/
+#define String_Register [PersonPort stringByAppendingString:@"/e-base/common/register/yungu/regiester"]
+/** APP注册提交信息(手机号-phoneNo 用户名-userName  密码-passWord  验证码-checkCode  registerToken) */
+#define String_RegisterForApp [PersonPort stringByAppendingString:@"/e-base/common/register/yungu/regiesterForApp"]
+/**验证码(手机号-phoneNumber) */
+#define String_RegisterCode [PersonPort stringByAppendingString:@"/e-base/common/sendsms/appSend"]
+
+/** 获取用户信息 */
+#define GetUserInfo [PersonPort stringByAppendingString: @"/e-base/app/profile"]
+/** 修改用户信息(description:个人签名  sex:性别  email:邮箱) */
+#define UpdateUserInfo  [PersonPort stringByAppendingString:@"/e-base/app/profile/editBase"]
+/** 上传更新头像(id photo) */
+#define Upload_Headportrait [PersonPort stringByAppendingString:@"/e-base/app/profile/editPhoto"]
+
+
+//修改密码
+#define UpPhonenum [PersonPort stringByAppendingString:@"/e-base/common/sendsms/sendForgetCodeForApp"] // phone_no
+#define UpCode [PersonPort stringByAppendingString:@"/e-base/common/appforget/repass"]// phone_no  checkCode  userpass
+
+
+
+
+
+#define LoginAPI [Portt stringByAppendingString:@"/cas/login?glt=true"]//登录接口
+/** CAS用户登出 */
+#define Outlogin [Portt stringByAppendingString:@"/cas/logout?glt=true"]
+/** 当前应用登出 */
+#define LogoutYunGu [Port stringByAppendingString:@"/common/logout.erun"]
+/** 用户信息登出 */
+#define LogoutUser [Port stringByAppendingString:@"/common/logout"]
+
+
+#pragma mark ------------------- 课程
+#define Course_List [Port stringByAppendingString:@"/common/appvideo!courseList.erun?checkCasLogin=true"]//圆盘的按钮图标
+#define Video_Play_Info [Port stringByAppendingString:@"/common/appvideo!play.erun?checkCasLogin=true&courseId=%@"]/**
+* params courseId-章节ID coursewareId-课件ID istestpass  testitemnum
+*  播放的视频课件，courseId参数必须带，是课程的ID，coursewareId可带可不带，
+*  课件的ID，带课件ID播放的是选中的课件，不带的话播放的是课程的第一章第一节
+* */
+#define Video_Chapter_Play [Port stringByAppendingString:@"/common/appvideo!play.erun?checkCasLogin=true&courseId=%@&coursewareId=%@"]//点击章节列表获取当前课程信息
+#define Video_Chapter_List [Port stringByAppendingString:@"/common/appvideo!playList.erun?checkCasLogin=true&courseId=%@"]//加载章节列表内容
+
+
+#pragma mark ------------------- 考试
+/** 自测题 coursewareId */
+#define CourseWare_Test [Port stringByAppendingString:@"/study/cs!test.erun?coursewareId="]
+/** 测试结果 courseId coursewareId */
+#define Test_Result [Port stringByAppendingString:@"/study/cs!result.erun?courseId=%@&coursewareId=%@"]
+/** 提交测试结果 coursewareId-课件ID result-回答选项的optionId */
+#define Submit_TestAnswers [Port stringByAppendingString:@"/study/cs!submitTest.erun"]
+
+
+
+#define String_Study_Trace [Port stringByAppendingString:@"/profile/record!courseview.erun"]//学习痕迹列表
+#define Save_MyCourse [Port stringByAppendingString:@"/study/collection!collection.erun"]/** 收藏我的课程 */
+#define MyCollection_List [Port stringByAppendingString:@"/main/appvideo!collectionList.erun"]/** 收藏课程列表 */
+#define Delete_MyCollection [Port stringByAppendingString:@"/profile/record!deleteCollection.erun"]/** 删除收藏课程(ids加,号隔开) */
+
+
+
+
+#define String_Save_Video_Exit_Info [Port stringByAppendingString:@"/study/courses!updateStudyTime.erun"]//退出程序应用时上传更新播放信息[coursewareId,studyTime,totalTime]
+
+//导航栏颜色
+#define NavColor [UIColor colorWithRed:92/255.0 green:191/255.0 blue:234/255.0 alpha:1]
+
+
+
+#define LogSuccess @"LoginSuccess"
+#define Header @"photo"
+#define Education @"education"
+#define Sign @"sign"
+#define NiceName @"name"
+#define Sex @"sex"
+#define E_mail @"email"
+#define Account @"userName"
+//#define PassWord @"password"
+#define ID @"userid"
+#define Videourl @"videourl"
+#define CourName @"coursename"
+#define ChapterName @"chaptername"
+#define TeachName @"teachname"
+#define Prewareid @"preware"
+#define Nextwareid @"nextware"
+
+#define StudyTime @"studytime"
+#define TotalTime @"totaltime"
+#define CoursewareID @"coursewareId"
+
+#define ON @"On"
+
+#endif
