@@ -148,38 +148,10 @@
     NSString *cellID = @"traceID";
     MyTraceTableViewCell *cell = [_traceTV dequeueReusableCellWithIdentifier:cellID];
     CircleModel *circlemodel = self.modelarray[indexPath.section];
-    [self saveArrayData:circlemodel.value[indexPath.row] saveFileName:@"chapterarray"];
-    ValueModel *vamodel = [self loadArrayData:@"chapterarray"];
     ValueModel *valuemodel = circlemodel.value[indexPath.row];
-    if (vamodel) {
-        [cell setTraceModel:vamodel];
-    }
-    else{
     [cell setTraceModel:valuemodel];
-    }
-    return cell;
-}
-//归档分类模型数据 并保存
--(BOOL)saveArrayData:(NSMutableArray *)data  saveFileName:(NSString *)fileName
-{
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = [paths objectAtIndex:0];
-    if (!documentsDirectory) {
-        NSLog(@"Documents directory not found!");
-        return NO;
-    }
-    NSString *appFile = [documentsDirectory stringByAppendingPathComponent:fileName];
-    return ([NSKeyedArchiver archiveRootObject:data toFile:appFile]);
     
-}
-
--(id) loadArrayData:(NSString *)fileName
-{
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = [paths objectAtIndex:0];
-    NSString *appFile = [documentsDirectory stringByAppendingPathComponent:fileName];
-    NSMutableArray *myData = [NSKeyedUnarchiver unarchiveObjectWithFile:appFile];
-    return myData;
+    return cell;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     TraceChapterViewController *tracechapterVC = [[TraceChapterViewController alloc]init];

@@ -83,23 +83,11 @@
     
     NSString * tempStr = [NSString stringWithFormat:@"%ld-%@",(long)indexPath.row+1,model.name];
     cell.textLabel.text = tempStr;
-    
-    
-    //cell.imageView.image = [UIImage imageNamed:@"collect"];
     cell.detailTextLabel.text = model.playTime;
     cell.textLabel.font = [UIFont systemFontOfSize:13];
     cell.detailTextLabel.font = [UIFont systemFontOfSize:13];
     cell.selectedBackgroundView = [[UIView alloc] initWithFrame:cell.frame];
-    
-//    if (indexPath.row == self.indexs ) {
-//        cell.selected = YES;
-//        cell.backgroundColor = [UIColor orangeColor];
-//
-//    }else
-//    {
-//        cell.backgroundColor = [UIColor whiteColor];
-//
-//    }
+
     cell.selectedBackgroundView.backgroundColor = [UIColor orangeColor];
     return cell;
 }
@@ -112,19 +100,14 @@
     NSLog(@"LastStudyTIme-----%@",model.lastStudyTime);
     if(model.lastStudyTime)
     {
-    self.indexs = indexPath.row;
-        
     NSString *appendstr = [NSString stringWithFormat:Video_Chapter_Play,self.courseId,model.id];
     [[NetworkSingleton sharedManager]getResultWithParameter:nil url:appendstr successBlock:^(id responseBody) {
-        
         NSDictionary *dict = responseBody[@"result"];
             //传值给video界面！
             NSNotification *notification = [NSNotification notificationWithName:@"ChapterNotice" object:nil userInfo:dict];
             [[NSUserDefaults standardUserDefaults]setBool:YES forKey:@"ISNOTICE"];
             [[NSUserDefaults standardUserDefaults]synchronize];
-
             [[NSNotificationCenter defaultCenter]postNotification:notification];
-        
     } failureBlock:^(NSString *error) {
         
     }];

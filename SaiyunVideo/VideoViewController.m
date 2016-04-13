@@ -181,12 +181,11 @@ singleton_implementation(VideoViewController)
                 {
                     NSDictionary *dict = @{@"coursewareId":self.valuemodel.id,@"studyTime":playtimestr,@"totalTime":totaltimestr};
                     [self poststudyTimeDict:dict Url:String_Save_Video_Exit_Info];
-                    
                 }
             }
         }
     }
-    //[[NSNotificationCenter defaultCenter]removeObserver:self];
+    [[NSNotificationCenter defaultCenter]removeObserver:self name:NetworkViaWWAN object:nil];
     //界面消失时移除对视频的监听
     [self removeOBserverFromPlayer:self.player];
     NSLog(@"界面消失---");
@@ -307,11 +306,13 @@ singleton_implementation(VideoViewController)
         [self presentViewController:log animated:YES completion:nil];
     }
     //章节点击的通知接收
-    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(ChapterNotifition:) name:@"ChapterNotice" object:nil];
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(ChapterNotifition:) name:@"ChapterNotice"  object:nil];
     //收藏传过来的通知
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(updatecollectiondata:) name:@"UpdateColloctionData" object:nil];
     //足迹列表
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(TraceNotice:) name:@"TraceNotice" object:nil];
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(Alert) name: NetworkViaWWAN object:nil];
+
     
     //如果收藏列表加载是成功的则走下面的步骤
     [[NetworkSingleton sharedManager]getResultWithParameter:nil url:MyCollection_List successBlock:^(id responseBody) {
@@ -325,6 +326,7 @@ singleton_implementation(VideoViewController)
         }];
         
     } failureBlock:^(NSString *error) {
+        [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
         self.hud.hidden = YES;
         [[Tool SharedInstance]showtoast:@"请稍后再试"];
     }];
@@ -352,6 +354,43 @@ singleton_implementation(VideoViewController)
     self.isnotice = NO;
 }
 
+- (void)Alert{
+    //当开关没打开时弹框，打开时不执行操作
+    self.on = [[NSUserDefaults standardUserDefaults]boolForKey:ON];
+    if (!self.on) {
+        UIAlertView *setinter = [[UIAlertView alloc]initWithTitle:@"亲，非wifi条件下播放视频很费流量喔~" message:nil delegate:self cancelButtonTitle:nil otherButtonTitles:@"去设置", @"只在WI-FI下播放",nil];
+        [setinter show];
+    }else
+    {
+        
+    }
+}
+
+#pragma mark -
+#pragma mark -AlertView的点击事件跳到设置开启开关
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    switch (buttonIndex) {
+        case 0:
+        {
+            SettingTableViewController *setvc = [[SettingTableViewController alloc]init];
+            [[NSUserDefaults standardUserDefaults]setBool:YES forKey:@"set"];
+            [[NSUserDefaults standardUserDefaults]synchronize];
+            [self.navigationController pushViewController:setvc animated:YES];
+        }
+            break;
+        case 1:
+        {
+            //如果选择了只在wifi播放就隐藏了加载视频的提示框
+            [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+            //self.hud.hidden = YES;
+            [[NSUserDefaults standardUserDefaults]setBool:YES forKey:@"onlywifi"];
+            [[NSUserDefaults standardUserDefaults]synchronize];
+        }
+        default:
+            break;
+    }
+}
 #pragma mark-
 #pragma mark-开启侧栏按钮
 - (void)clickleftButton
@@ -893,56 +932,19 @@ singleton_implementation(VideoViewController)
 #pragma mark--传url播放视频之前判断网络状况
 - (void)setVideo:(NSString *)videoStr{
     NSLog(@"111");
-    //判断为4g的情况
     BOOL is4g = [[NSUserDefaults standardUserDefaults]boolForKey:@"4g"];
-    if (is4g)
-    {
+    if (is4g) {
         self.on = [[NSUserDefaults standardUserDefaults]boolForKey:ON];
-        //开关没打开时弹出框
         if (!self.on) {
-            BOOL wifibool = [[NSUserDefaults standardUserDefaults]boolForKey:@"onlywifi"];
-            if (wifibool) {
-                
-            }else{
-                UIAlertView *setinter = [[UIAlertView alloc]initWithTitle:@"亲，非wifi条件下播放视频很费流量喔~" message:nil delegate:self cancelButtonTitle:nil otherButtonTitles:@"去设置", @"只在WI-FI下播放",nil];
-                [setinter show];
-            }
 
         }
-        //开关打开时直接播放视频
-        else{
+        else
+        {
             [self playVideo:videoStr];
         }
-    }
-    //wifi下直接播放视频
-    else{
-        NSLog(@"判断为wifi播放视频");
+    }else
+    {
         [self playVideo:videoStr];
-    }
-}
-
-#pragma mark -
-#pragma mark -AlertView的点击事件跳到设置开启开关
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    switch (buttonIndex) {
-        case 0:
-        {
-            SettingTableViewController *setvc = [[SettingTableViewController alloc]init];
-            [[NSUserDefaults standardUserDefaults]setBool:YES forKey:@"set"];
-            [[NSUserDefaults standardUserDefaults]synchronize];
-            [self.navigationController pushViewController:setvc animated:YES];
-        }
-            break;
-            case 1:
-        {
-            //如果选择了只在wifi播放就隐藏了加载视频的提示框
-            self.hud.hidden = YES;
-            [[NSUserDefaults standardUserDefaults]setBool:YES forKey:@"onlywifi"];
-            [[NSUserDefaults standardUserDefaults]synchronize];
-        }
-        default:
-            break;
     }
 }
 
@@ -953,7 +955,8 @@ singleton_implementation(VideoViewController)
     self.playerItem = [AVPlayerItem playerItemWithAsset:movieAsset];
     if(self.player){
         NSLog(@"222");
-        self.hud.hidden = YES;
+        [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+        //self.hud.hidden = YES;
         //切换视频时，将字幕label置为空
         _subtitlesLabel.text = nil;
         [self removeOBserverFromPlayer:self.player];
@@ -966,11 +969,12 @@ singleton_implementation(VideoViewController)
         NSLog(@"333");
     }
     else{
-        self.hud = [[MBProgressHUD alloc]initWithView:self.view];
-        [self.view addSubview: self.hud];
-        self.hud.labelText = @"加载视频数据中...";
-        [self.hud show:YES];
+//        self.hud = [[MBProgressHUD alloc]initWithView:self.view];
+//        [self.view addSubview: self.hud];
+//        self.hud.labelText = @"加载视频数据中...";
+//        [self.hud show:YES];
         //[self removeOBserverFromPlayer:self.player];
+        [MBProgressHUD showHUDAddedTo:self.view animated:YES];
         self.player = [AVPlayer playerWithPlayerItem:self.playerItem];
         self.playerLayer = [AVPlayerLayer playerLayerWithPlayer:_player];
         self.playerLayer.frame = self.VideoView.bounds;
@@ -1010,7 +1014,7 @@ singleton_implementation(VideoViewController)
                 {
                     [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
                     NSLog(@"播放失败");
-                    self.hud.hidden = YES;
+                    //self.hud.hidden = YES;
                     [[Tool SharedInstance]showtoast:@"缓冲视频失败"];
                     [object removeObserver:self forKeyPath:keyPath];
                     [self.player replaceCurrentItemWithPlayerItem:nil];
@@ -1020,7 +1024,7 @@ singleton_implementation(VideoViewController)
                     break;
                 case AVPlayerItemStatusReadyToPlay:{
                     [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
-                    self.hud.hidden = YES;
+                    //self.hud.hidden = YES;
                     [self.player play];
                     [self updateUI];
                     _progressSliderView.maximumValue = CMTimeGetSeconds(_player.currentItem.duration);
@@ -1035,7 +1039,8 @@ singleton_implementation(VideoViewController)
                     break;
                 case AVPlayerItemStatusUnknown:
                 {
-                    self.hud.hidden = YES;
+                    [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+                    //self.hud.hidden = YES;
                     NSLog(@"未知状态");
                     [object removeObserver:self forKeyPath:keyPath];
                     [self.player replaceCurrentItemWithPlayerItem:nil];
@@ -1059,7 +1064,7 @@ singleton_implementation(VideoViewController)
 #pragma mark -播放结束的方法
 - (void)playbackFinished
 {
-    //播放结束时，如果有测试则进入测试界面，没有的话直接进入下一个课程
+    //播放结束时进入下一个课程
     NSLog(@"视频播放完成");
     self.subtitlesLabel.text = nil;
     [[Tool SharedInstance]showtoast:@"正在跳转下一个课程，请耐心等待喔~"];
@@ -1276,13 +1281,33 @@ singleton_implementation(VideoViewController)
 //进度条的定时器执行的方法
 - (void)timeAction
 {
+    
+    
+    //判断4g网络下，且开关没打开的时候，暂停视频播放，如果开关打开了，就不用管了
+    
+    BOOL is4g = [[NSUserDefaults standardUserDefaults]boolForKey:@"4g"];
+    if (is4g) {
+        self.on = [[NSUserDefaults standardUserDefaults]boolForKey:ON];
+        //4g网络下,开关没打开
+        if (!self.on) {
+            [self.player pause];
+        }
+        //4g网络下，开关打开时，继续播放，什么处理都不做？
+        else
+        {
+            
+        }
+    }else
+    {
+        
+    }
+
+    
     //判断播放状态
     if (_player.rate != 1) {
         return;
     }
-
     NSInteger currentSecond = CMTimeGetSeconds(_player.currentItem.currentTime);
-    //NSLog(@"缓冲时间---%ld,当前时间---%ld",(long)[self availableDuration],(long)currentSecond);
     BOOL notreachable = [[NSUserDefaults standardUserDefaults]boolForKey:@"noreachable"];
     if ((long)[self availableDuration] <= (long)currentSecond) {
         if (notreachable) {

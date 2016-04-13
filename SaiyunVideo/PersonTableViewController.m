@@ -83,7 +83,6 @@
         }
         else
         {
-            
         }
     } failureBlock:^(NSString *error) {
         NSLog(@"Menu里获取用户信息错误");
@@ -188,7 +187,7 @@
         cell.accessoryType=UITableViewCellAccessoryDisclosureIndicator;
         cell.textLabel.text = @"头像";
         headerimage = [[UIImageView alloc]init];
-        headerimage.frame = CGRectMake(260, 10, 30, 30);
+        headerimage.frame = CGRectMake(kScreenWidth-60, 10, 30, 30);
         
         NSUserDefaults *userdefault = [NSUserDefaults standardUserDefaults];
         NSString *header = [userdefault objectForKey:Header];

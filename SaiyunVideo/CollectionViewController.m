@@ -185,7 +185,6 @@
     VideoViewController *vccc = [VideoViewController sharedVideoViewController];
     //更新三个label，传个播放视频的url，章节列表
     NSDictionary *dict = self.resultarr[indexPath.row];
-    //NSNotification *notification = [NSNotification notificationWithName:@"UpdateColloctionData" object:nil userInfo:dict];
     [[NSUserDefaults standardUserDefaults]setBool:YES forKey:@"ISNOTICE"];
     [[NSUserDefaults standardUserDefaults]synchronize];
     [[NSNotificationCenter defaultCenter]postNotificationName:@"UpdateColloctionData" object:nil userInfo:dict];

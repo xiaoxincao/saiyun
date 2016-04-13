@@ -40,7 +40,6 @@
     view.backgroundColor = [UIColor clearColor];
     [_settableview setTableFooterView:view];
     
-    
     [self setSetNavigation];
 }
 
@@ -208,6 +207,7 @@
 
     }else
     {
+        [[NSUserDefaults standardUserDefaults]setBool:NO forKey:ON];
         [[NSUserDefaults standardUserDefaults]setBool:NO forKey:@"switchoh"];
         [[NSUserDefaults standardUserDefaults]synchronize];
     }

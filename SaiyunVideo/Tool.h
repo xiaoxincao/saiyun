@@ -41,7 +41,7 @@ typedef enum
 - (void)hideprogress;
 - (void)showprogress;
 - (void)showHUD:(HUDShowType)type;
-+ (BOOL)isConnectionAvailable;
+
 /**
  *  检测网络连接,当没有网络连接时,将在view上显示 提示重新加载的界面
  *
@@ -54,10 +54,6 @@ typedef enum
 
                                         reloadBlock:(void (^)())reloadBlock;
 
-
-+ (BOOL)IsEnableWiFi;
-
-+ (BOOL)IsEnable4g;
 
 
 /**

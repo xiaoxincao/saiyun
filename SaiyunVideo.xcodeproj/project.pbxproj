@@ -17,6 +17,7 @@
 		C756CE1C1C7C06AA005CC628 /* TraceChapterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C756CE1B1C7C06AA005CC628 /* TraceChapterViewController.m */; };
 		C776E4731C4F73990005DBF2 /* TestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C776E4711C4F73990005DBF2 /* TestViewController.m */; };
 		C776E4741C4F73990005DBF2 /* TestViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C776E4721C4F73990005DBF2 /* TestViewController.xib */; };
+		C7B6322A1CBE4CF00091C9D2 /* AppDelegate+XBNetworkingMonitor.m in Sources */ = {isa = PBXBuildFile; fileRef = C7B632291CBE4CF00091C9D2 /* AppDelegate+XBNetworkingMonitor.m */; };
 		C7C89DF91CA50A0E00B6DF10 /* AnimationView.m in Sources */ = {isa = PBXBuildFile; fileRef = C7C89DF81CA50A0E00B6DF10 /* AnimationView.m */; };
 		C7C89DFD1CA50CB600B6DF10 /* ExitCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C7C89DFA1CA50CB600B6DF10 /* ExitCell.xib */; };
 		C7C89DFE1CA50CB600B6DF10 /* ExitCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C7C89DFB1CA50CB600B6DF10 /* ExitCell.m */; };
@@ -114,6 +115,8 @@
 		C776E4701C4F73990005DBF2 /* TestViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestViewController.h; sourceTree = "<group>"; };
 		C776E4711C4F73990005DBF2 /* TestViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestViewController.m; sourceTree = "<group>"; };
 		C776E4721C4F73990005DBF2 /* TestViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TestViewController.xib; sourceTree = "<group>"; };
+		C7B632281CBE4CF00091C9D2 /* AppDelegate+XBNetworkingMonitor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AppDelegate+XBNetworkingMonitor.h"; sourceTree = "<group>"; };
+		C7B632291CBE4CF00091C9D2 /* AppDelegate+XBNetworkingMonitor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AppDelegate+XBNetworkingMonitor.m"; sourceTree = "<group>"; };
 		C7C89DF71CA50A0E00B6DF10 /* AnimationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnimationView.h; sourceTree = "<group>"; };
 		C7C89DF81CA50A0E00B6DF10 /* AnimationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnimationView.m; sourceTree = "<group>"; };
 		C7C89DFA1CA50CB600B6DF10 /* ExitCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ExitCell.xib; sourceTree = "<group>"; };
@@ -277,6 +280,8 @@
 		C70038981BFAC1070043A247 /* AppDelegate */ = {
 			isa = PBXGroup;
 			children = (
+				C7B632281CBE4CF00091C9D2 /* AppDelegate+XBNetworkingMonitor.h */,
+				C7B632291CBE4CF00091C9D2 /* AppDelegate+XBNetworkingMonitor.m */,
 				C7FD71BE1BF97DD200437DB6 /* AppDelegate.h */,
 				C7FD71BF1BF97DD200437DB6 /* AppDelegate.m */,
 			);
@@ -865,6 +870,7 @@
 				C7F6B19D1C0DA7B70021BABC /* ChaptersModel.m in Sources */,
 				C7E57CF91C08048200BF5C3B /* JKCountDownButton.m in Sources */,
 				C7FA57BF1C20167A00B12B85 /* TraceModel.m in Sources */,
+				C7B6322A1CBE4CF00091C9D2 /* AppDelegate+XBNetworkingMonitor.m in Sources */,
 				C7EB98D11C06B0E10081A841 /* ClearView.m in Sources */,
 				C7C89E241CB8CB3300B6DF10 /* GuideViewController.m in Sources */,
 				C7FA57B41C1FF1D700B12B85 /* CollectionViewController.m in Sources */,

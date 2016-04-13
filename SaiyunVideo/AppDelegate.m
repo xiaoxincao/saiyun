@@ -29,13 +29,11 @@
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:YES];
-    
     //设置侧栏
     VideoViewController *center = [[VideoViewController alloc]init];
     UINavigationController *nav1 = [[UINavigationController alloc]initWithRootViewController:center];
     MenuViewController *leftDrawer = [[MenuViewController alloc]init];
     UINavigationController *nav2 = [[UINavigationController alloc]initWithRootViewController:leftDrawer];
-    
     _drawerController = [[MMDrawerController alloc]
                          initWithCenterViewController:nav1
                          leftDrawerViewController:nav2
@@ -44,24 +42,13 @@
     [_drawerController setOpenDrawerGestureModeMask:MMOpenDrawerGestureModeAll];
     [_drawerController setCloseDrawerGestureModeMask:MMCloseDrawerGestureModeAll];
     
-    //注册监控网络通知，随时通知用户
-    
-    Reachability *reachability = [Reachability reachabilityWithHostName:@"www.baidu.com"];
-    [reachability startNotifier];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged:) name:kReachabilityChangedNotification object:nil];
-    
-    BOOL ssss = [[NSUserDefaults standardUserDefaults]boolForKey:LogSuccess];
-    
+    //监听网络的方法
+    [self startMonitor];
+        BOOL ssss = [[NSUserDefaults standardUserDefaults]boolForKey:LogSuccess];
     if(!ssss){
-
         FirstViewController *firstvc = [[FirstViewController alloc]init];
         UINavigationController *fa = [[UINavigationController alloc]initWithRootViewController:firstvc];
         self.window.rootViewController = fa;
-        
- 
-//        GuideViewController *guidevc = [[GuideViewController alloc]init];
-//        
-//        self.window.rootViewController = guidevc;
         
         [[NSUserDefaults standardUserDefaults]setBool:YES forKey:@"logisroot"];
         [[NSUserDefaults standardUserDefaults]synchronize];
@@ -71,46 +58,7 @@
         self.window.rootViewController = _drawerController;
     }
     
-    
-    
-    //判断是否第一次启动
-    if (![[NSUserDefaults standardUserDefaults] boolForKey:@"everLaunched"]) {
-        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"everLaunched"];
-        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"firstLaunch"];
-    }
-    else{
-        [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"firstLaunch"];
-    }
     return YES;
-}
-
-- (void)reachabilityChanged:(NSNotification *)notification
-{
-    Reachability *curReachability = [notification object];
-    NSParameterAssert([curReachability isKindOfClass:[Reachability class]]);
-    NetworkStatus curStatus = [curReachability currentReachabilityStatus];
-    
-    
-    if(curStatus == NotReachable) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"网络连接失败"message:nil
-                                                       delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
-        [alert show];
-        NSLog(@"网络链接失败");
-        [[NSUserDefaults standardUserDefaults]setBool:YES forKey:@"noreachable"];
-        [[NSUserDefaults standardUserDefaults]synchronize];
-    }else if (curStatus == ReachableViaWiFi) {
-        [[NSUserDefaults standardUserDefaults]setBool:NO forKey:@"4g"];
-        [[NSUserDefaults standardUserDefaults]setBool:NO forKey:@"noreachable"];
-        [[NSUserDefaults standardUserDefaults]synchronize];
-        NSLog(@"wifi--");
-        //[[Tool SharedInstance]showtoast:@"wifi网络下可尽情浏览视频"];
-    }else if(curStatus == ReachableViaWWAN){
-        NSLog(@"4g网络");
-        [[NSUserDefaults standardUserDefaults]setBool:YES forKey:@"4g"];
-        [[NSUserDefaults standardUserDefaults]setBool:NO forKey:@"noreachable"];
-        [[NSUserDefaults standardUserDefaults]synchronize];
-        [[Tool SharedInstance]showtoast:@"当前为运营商网络，请注意流量的使用"];
-    }
 }
 
 
@@ -167,6 +115,7 @@
 
 - (void)applicationWillTerminate:(UIApplication *)application {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+    [[NSNotificationCenter defaultCenter]removeObserver:self];
 }
 
 @end

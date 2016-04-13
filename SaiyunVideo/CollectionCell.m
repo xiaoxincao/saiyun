@@ -22,7 +22,7 @@
 - (IBAction)selectBtnaction:(UIButton *)sender {
     self.collectionmodel.isChosed = !self.collectionmodel.isChosed;
     if (self.collectionmodel.isChosed) {
-        [_selectBtn setBackgroundImage:[UIImage imageNamed:@"chose2@3x"] forState:UIControlStateNormal];
+        [_selectBtn setBackgroundImage:[UIImage imageNamed:@"chose2"] forState:UIControlStateNormal];
     }else{
         [_selectBtn setBackgroundImage:[UIImage imageNamed:@"chose1@3x"] forState:UIControlStateNormal];
     }
@@ -32,7 +32,7 @@
 - (void)setCollectionModel:(CollectionModel *)collection{
     self.collectionmodel = collection;
     if (self.collectionmodel.isChosed) {
-        [_selectBtn setBackgroundImage:[UIImage imageNamed:@"chose2@3x"] forState:UIControlStateNormal];
+        [_selectBtn setBackgroundImage:[UIImage imageNamed:@"chose2"] forState:UIControlStateNormal];
     }else{
         [_selectBtn setBackgroundImage:[UIImage imageNamed:@"chose1@3x"] forState:UIControlStateNormal];
     }

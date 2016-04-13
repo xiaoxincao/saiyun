@@ -107,36 +107,7 @@ static Tool *tool;
     [self showprogress];
 }
 
-//#pragma mark -actionRemoveAnimation
-//- (void)actionRemoveAnimation {
-//    [annurImageView->progressLayer removeAllAnimations];
-//}
-//
-//#pragma mark -actionCountProgress
-//- (void)actionCountProgress {
-//    [annurImageView actionRotationAnimation:rotationspeed];
-//}
 
-
-+ (BOOL)isConnectionAvailable{
-    BOOL isExistenceNetwork = YES;
-    Reachability *reach = [Reachability reachabilityWithHostName:Port];
-    switch ([reach currentReachabilityStatus]) {
-        case NotReachable:
-            isExistenceNetwork = NO;
-            break;
-        case ReachableViaWiFi:
-            isExistenceNetwork = YES;
-            break;
-        case ReachableViaWWAN:
-            isExistenceNetwork = YES;
-            break;
-            
-        default:
-            break;
-    }
-    return isExistenceNetwork;
-}
 + (BOOL)checkConectedWhileFaildShowReloadViewInView:
 (UIView *)view
                                         reloadBlock:(void (^)())reloadBlock
@@ -153,14 +124,6 @@ static Tool *tool;
     return YES;
 }
 
-
-+ (BOOL)IsEnableWiFi{
-    return ([Reachability reachabilityForLocalWiFi].currentReachabilityStatus != NotReachable&& [Reachability reachabilityForInternetConnection].currentReachabilityStatus == NotReachable);
-}
-
-+ (BOOL)IsEnable4g{
-    return ([Reachability reachabilityForInternetConnection].currentReachabilityStatus != NotReachable && [Reachability reachabilityForLocalWiFi].currentReachabilityStatus == NotReachable);
-}
 
 + (void)showAlertWithTitle:(NSString *)title Message:(NSString *)message CancelbtnTitle:(NSString *)buttonTitle OtherBtnTitles:(NSString *)otherBtnTitles
 {
