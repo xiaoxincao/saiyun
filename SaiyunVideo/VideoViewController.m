@@ -121,18 +121,33 @@ singleton_implementation(VideoViewController)
     self.navigationController.navigationBar.hidden = NO;
     self.navigationController.delegate = self;
     self.first = NO;
+    
+    
+    //如果收藏列表加载是成功的则走下面的步骤
+    [[NetworkSingleton sharedManager]getResultWithParameter:nil url:MyCollection_List successBlock:^(id responseBody) {
+        //每次页面出现都加载圆环按钮数据和加载圆环
+        [self loadDataWithCompletionHandle:^{
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self drawMyLayer];
+                //NSLog(@"界面出现时调用隐藏圆环");
+                [self performSelector:@selector(HiddenCircle:) withObject:nil afterDelay:3];
+            });
+        }];
+        
+    } failureBlock:^(NSString *error) {
+        [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+        self.hud.hidden = YES;
+        [[Tool SharedInstance]showtoast:@"请稍后再试"];
+    }];
 }
 
 
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    
     //只有此界面可以侧滑
     [self.mm_drawerController setOpenDrawerGestureModeMask:MMOpenDrawerGestureModeNone];
-    
     [self.mm_drawerController setCloseDrawerGestureModeMask:MMCloseDrawerGestureModeNone];
-
     [[NSUserDefaults standardUserDefaults]setBool:NO forKey:@"ISNOTICE"];
     [[NSUserDefaults standardUserDefaults]synchronize];
     
@@ -312,25 +327,6 @@ singleton_implementation(VideoViewController)
     //足迹列表
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(TraceNotice:) name:@"TraceNotice" object:nil];
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(Alert) name: NetworkViaWWAN object:nil];
-
-    
-    //如果收藏列表加载是成功的则走下面的步骤
-    [[NetworkSingleton sharedManager]getResultWithParameter:nil url:MyCollection_List successBlock:^(id responseBody) {
-        //每次页面出现都加载圆环按钮数据和加载圆环
-        [self loadDataWithCompletionHandle:^{
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self drawMyLayer];
-                //NSLog(@"界面出现时调用隐藏圆环");
-                [self performSelector:@selector(HiddenCircle:) withObject:nil afterDelay:3];
-            });
-        }];
-        
-    } failureBlock:^(NSString *error) {
-        [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
-        self.hud.hidden = YES;
-        [[Tool SharedInstance]showtoast:@"请稍后再试"];
-    }];
-
     
     
     _applegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
@@ -604,7 +600,6 @@ singleton_implementation(VideoViewController)
 
 #pragma mark---- 添加点击显示圆环的手势
 - (void)Gesture{
-    
     [self.VideoView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showcircleview:)]];
 }
 
@@ -655,6 +650,7 @@ singleton_implementation(VideoViewController)
 #pragma mark---------------圆盘按钮的点击事件
 - (void)conButtonClicked:(HVWLuckyWheelButton *) button {
     //NSLog(@"执行");
+    NSLog(@"tag-----%ld",(long)button.tag);
     //1.先将之前选中的按钮设置为未选中
     self.selectedLuckyWheelButton.selected = NO;
     //2.再将当前按钮设置为选中
@@ -931,12 +927,13 @@ singleton_implementation(VideoViewController)
 #pragma mark---------------以下全是播放器的代码
 #pragma mark--传url播放视频之前判断网络状况
 - (void)setVideo:(NSString *)videoStr{
-    NSLog(@"111");
     BOOL is4g = [[NSUserDefaults standardUserDefaults]boolForKey:@"4g"];
     if (is4g) {
         self.on = [[NSUserDefaults standardUserDefaults]boolForKey:ON];
         if (!self.on) {
+            [[Tool SharedInstance]showtoast:@"数据流量下打开设置里的开关方可播放视频喔"];
 
+            NSLog(@"开关没开");
         }
         else
         {
@@ -1291,6 +1288,8 @@ singleton_implementation(VideoViewController)
         //4g网络下,开关没打开
         if (!self.on) {
             [self.player pause];
+            //[self updateUI];
+            [_playproperty setImage:[UIImage imageNamed:@"play"] forState:UIControlStateNormal];
         }
         //4g网络下，开关打开时，继续播放，什么处理都不做？
         else
