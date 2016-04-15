@@ -116,7 +116,7 @@ singleton_implementation(VideoViewController)
 
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-    NSLog(@"界面出现了！！！！");
+    NSLog(@"viewWillAppear！");
     self.isOther = NO;
     self.navigationController.navigationBar.hidden = NO;
     self.navigationController.delegate = self;
@@ -203,7 +203,7 @@ singleton_implementation(VideoViewController)
     [[NSNotificationCenter defaultCenter]removeObserver:self name:NetworkViaWWAN object:nil];
     //界面消失时移除对视频的监听
     [self removeOBserverFromPlayer:self.player];
-    NSLog(@"界面消失---");
+    NSLog(@"viewWillDisappear");
     self.isOther = YES;
      //[self.player pause];
     //取消，释放未请求完成的视频对象
@@ -217,47 +217,20 @@ singleton_implementation(VideoViewController)
 
 
 #pragma mark-
-#pragma mark---- 初始化videoframe
-- (void)setVideoViewFrame{
-    
-    CGFloat X = 0;
-    CGFloat Y = kVideoY;
-    CGFloat Width = kScreenWidth;
-    CGFloat Height = kVideoHeight;
-    self.BGimageView.backgroundColor = [UIColor blackColor];
-    self.BGimageView.contentMode = UIViewContentModeScaleAspectFill;
-    self.VideoView = [[UIView alloc]initWithFrame:CGRectMake(X, Y, Width, Height)];
-    self.VideoView.backgroundColor = [UIColor blackColor];
-    
-    _subtitlesLabel = [[UILabel alloc]init];
-    _subtitlesLabel.textColor = [UIColor whiteColor];
-    _subtitlesLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:18.f];
-    _subtitlesLabel.textAlignment = 1;
-    [self.VideoView addSubview:_subtitlesLabel];
-    [_subtitlesLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.edges.equalTo(self.VideoView).with.insets(UIEdgeInsetsMake(kVideoHeight-35, 5, 5, 5));
-    }];
-    _circleview.center = _BGimageView.center;
-    [self.BGimageView addSubview:self.VideoView];
-}
-
-#pragma mark-
 #pragma mark------------------三个通知-------------------------
-#pragma mark-更新收藏列表传过来的数据====通知
+#pragma mark-更新收藏列表传过来的数据通知
 - (void)updatecollectiondata:(NSNotification *)dict
 {
     NSDictionary *mdict = [dict userInfo];
     //NSLog(@"收藏传过来的--%@",mdict);
     _vamodel = [ValueModel mj_objectWithKeyValues:mdict];
     self.courceid = _vamodel.courseId;
-    [self loadChapterDataWithCompletionHandle:self.courceid];
 }
 
 #pragma mark-我的足迹中章节列表的通知
 - (void)TraceNotice:(NSNotification *)dict
 {
     NSDictionary *mdict = [dict userInfo];
-    //NSLog(@"mdict---%@",mdict);
     [self chaptercommonnotice:mdict];
 }
 
@@ -275,7 +248,6 @@ singleton_implementation(VideoViewController)
 {
     _vamodel = [ValueModel mj_objectWithKeyValues:dict];
     self.courceid = _vamodel.courseId;
-    [self loadChapterDataWithCompletionHandle:self.courceid];
     //播放视频
     NSString *appendstr = [Video_Path stringByAppendingString:_vamodel.fullFilePath];
     NSString *appendstr2 = [appendstr stringByAppendingString:@".m3u8"];
@@ -339,62 +311,18 @@ singleton_implementation(VideoViewController)
     [self setVideoNavigation];
     //初始化VideoView
     [self setVideoViewFrame];
-
+    //初始化进度条的UI
+    [self initProgressUI];
     //点击屏幕显示圆环
     [self Gesture];
     
-    //初始化进度条的UI
-    [self initProgressUI];
+    [self creatchaptertableview];
     
     //每次进入此页面都将isnotice字段赋值为no
     self.isnotice = NO;
 }
 
-- (void)Alert{
-    //当开关没打开时弹框，打开时不执行操作
-    self.on = [[NSUserDefaults standardUserDefaults]boolForKey:ON];
-    if (!self.on) {
-        UIAlertView *setinter = [[UIAlertView alloc]initWithTitle:@"亲，非wifi条件下播放视频很费流量喔~" message:nil delegate:self cancelButtonTitle:nil otherButtonTitles:@"去设置", @"只在WI-FI下播放",nil];
-        [setinter show];
-    }else
-    {
-        
-    }
-}
-
 #pragma mark -
-#pragma mark -AlertView的点击事件跳到设置开启开关
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    switch (buttonIndex) {
-        case 0:
-        {
-            SettingTableViewController *setvc = [[SettingTableViewController alloc]init];
-            [[NSUserDefaults standardUserDefaults]setBool:YES forKey:@"set"];
-            [[NSUserDefaults standardUserDefaults]synchronize];
-            [self.navigationController pushViewController:setvc animated:YES];
-        }
-            break;
-        case 1:
-        {
-            //如果选择了只在wifi播放就隐藏了加载视频的提示框
-            [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
-            //self.hud.hidden = YES;
-            [[NSUserDefaults standardUserDefaults]setBool:YES forKey:@"onlywifi"];
-            [[NSUserDefaults standardUserDefaults]synchronize];
-        }
-        default:
-            break;
-    }
-}
-#pragma mark-
-#pragma mark-开启侧栏按钮
-- (void)clickleftButton
-{
-    [self.mm_drawerController toggleDrawerSide:MMDrawerSideLeft animated:YES completion:nil];
-}
-
-
 #pragma mark 设置导航栏
 - (void)setVideoNavigation
 {
@@ -433,6 +361,12 @@ singleton_implementation(VideoViewController)
     }
 }
 
+#pragma mark-开启侧栏按钮
+- (void)clickleftButton
+{
+    [self.mm_drawerController toggleDrawerSide:MMDrawerSideLeft animated:YES completion:nil];
+}
+
 #pragma mark-收藏的方法
 - (void)collection:(UIButton *)rightButton
 {
@@ -461,6 +395,7 @@ singleton_implementation(VideoViewController)
     _isCollection = !_isCollection;
     
 }
+
 //切换视频判断当前课程是否包含在收藏列表里，改变按钮样式
 - (void)loadCollectionDataWithCompletionHandle:(NSString *)currentbtntitle
 {
@@ -502,8 +437,90 @@ singleton_implementation(VideoViewController)
     }];
 }
 
+
+#pragma mark-
+#pragma mark---- 初始化videoframe
+- (void)setVideoViewFrame{
+    
+    CGFloat X = 0;
+    CGFloat Y = kVideoY;
+    CGFloat Width = kScreenWidth;
+    CGFloat Height = kVideoHeight;
+    self.BGimageView.backgroundColor = [UIColor blackColor];
+    self.BGimageView.contentMode = UIViewContentModeScaleAspectFill;
+    self.VideoView = [[UIView alloc]initWithFrame:CGRectMake(X, Y, Width, Height)];
+    self.VideoView.backgroundColor = [UIColor blackColor];
+    
+    _subtitlesLabel = [[UILabel alloc]init];
+    _subtitlesLabel.textColor = [UIColor whiteColor];
+    _subtitlesLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:18.f];
+    _subtitlesLabel.textAlignment = 1;
+    [self.VideoView addSubview:_subtitlesLabel];
+    [_subtitlesLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.equalTo(self.VideoView).with.insets(UIEdgeInsetsMake(kVideoHeight-35, 5, 5, 5));
+    }];
+    _circleview.center = _BGimageView.center;
+    [self.BGimageView addSubview:self.VideoView];
+}
+
+#pragma mark----初始化章节tableview
+- (void)creatchaptertableview
+{
+    self.chaptertableview = [[Chaptertableview alloc]init];
+    [self.view addSubview:self.chaptertableview];
+    
+    [self.chaptertableview mas_makeConstraints:^(MASConstraintMaker *make) {
+        //上，左，下，右
+        make.right.offset(-20);
+        make.left.offset(20);
+        make.bottom.offset(-53);
+        make.height.offset(150);
+    }];
+    self.chaptertableview.hidden = YES;
+}
+
+
+
 #pragma mark -
-#pragma mark -- 绘制图形
+#pragma mark -运营商网下发出的通知方法
+- (void)Alert{
+    //当开关没打开时弹框，打开时不执行操作
+    self.on = [[NSUserDefaults standardUserDefaults]boolForKey:ON];
+    if (!self.on) {
+        UIAlertView *setinter = [[UIAlertView alloc]initWithTitle:@"亲，非wifi条件下播放视频很费流量喔~" message:nil delegate:self cancelButtonTitle:nil otherButtonTitles:@"去设置", @"只在WI-FI下播放",nil];
+        [setinter show];
+    }else
+    {
+        
+    }
+}
+
+#pragma mark -AlertView的点击事件跳到设置开启开关
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    switch (buttonIndex) {
+        case 0:
+        {
+            SettingTableViewController *setvc = [[SettingTableViewController alloc]init];
+            [[NSUserDefaults standardUserDefaults]setBool:YES forKey:@"set"];
+            [[NSUserDefaults standardUserDefaults]synchronize];
+            [self.navigationController pushViewController:setvc animated:YES];
+        }
+            break;
+        case 1:
+        {
+            //如果选择了只在wifi播放就隐藏了加载视频的提示框
+            [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+            [[NSUserDefaults standardUserDefaults]setBool:YES forKey:@"onlywifi"];
+            [[NSUserDefaults standardUserDefaults]synchronize];
+        }
+        default:
+            break;
+    }
+}
+
+#pragma mark -
+#pragma mark ---- 圆环控件的创建
 - (void)drawMyLayer
 {
     //黑色阴影view
@@ -622,31 +639,6 @@ singleton_implementation(VideoViewController)
 
 
 #pragma mark-
-#pragma mark----加载圆环的按钮数据
-- (void)loadDataWithCompletionHandle:(void (^)( ))successBlock
-{
-    [[NetworkSingleton sharedManager]postResultWithParameter:nil url:Course_List successBlock:^(id responseBody) {
-        //NSLog(@"圆盘----%@",responseBody);
-        _circleArray = [responseBody objectForKey:@"result"];
-        //存放全部数据模型的数组
-        self.resultArray = [NSMutableArray array];
-        //存放圆环按钮圆环按钮name的模型数组
-        self.circleBtnArray = [NSMutableArray array];
-        for (int i = 0; i<self.circleArray.count; i++) {
-            NSDictionary *dict = self.circleArray[i];
-            self.vvmodel = [ValueModel mj_objectWithKeyValues:dict];
-            [self.resultArray addObject:self.vvmodel];
-            [self.circleBtnArray addObject:self.vvmodel.name];
-        }
-        if (successBlock) {
-            successBlock();
-        }
-    } failureBlock:^(NSString *error) {
-        [[Tool SharedInstance]showtoast:@"圆环：与服务器失去连接"];
-    }];
-}
-
-#pragma mark-
 #pragma mark---------------圆盘按钮的点击事件
 - (void)conButtonClicked:(HVWLuckyWheelButton *) button {
     //NSLog(@"执行");
@@ -703,8 +695,6 @@ singleton_implementation(VideoViewController)
             self.courceid = model.id;
             self.courcewareid = model.coursewareId;
             NSLog(@"章节id---%@",model.coursewareId);
-            //更新章节列表
-            [self loadChapterDataWithCompletionHandle:self.courceid];
             //如果传章节id过来，则播放对应的章节视频，没有章节id则播放第一个视频
             if(model.coursewareId != nil){
                 
@@ -773,6 +763,31 @@ singleton_implementation(VideoViewController)
     }];
     
 }
+
+#pragma mark-
+#pragma mark----加载圆环的按钮数据
+- (void)loadDataWithCompletionHandle:(void (^)( ))successBlock
+{
+    [[NetworkSingleton sharedManager]postResultWithParameter:nil url:Course_List successBlock:^(id responseBody) {
+        _circleArray = [responseBody objectForKey:@"result"];
+        //存放全部数据模型的数组
+        self.resultArray = [NSMutableArray array];
+        //存放圆环按钮圆环按钮name的模型数组
+        self.circleBtnArray = [NSMutableArray array];
+        for (int i = 0; i<self.circleArray.count; i++) {
+            NSDictionary *dict = self.circleArray[i];
+            self.vvmodel = [ValueModel mj_objectWithKeyValues:dict];
+            [self.resultArray addObject:self.vvmodel];
+            [self.circleBtnArray addObject:self.vvmodel.name];
+        }
+        if (successBlock) {
+            successBlock();
+        }
+    } failureBlock:^(NSString *error) {
+        [[Tool SharedInstance]showtoast:@"圆环：与服务器失去连接"];
+    }];
+}
+
 #pragma mark---- 加载章节信息
 - (void)loadChapterDataWithCompletionHandle:(NSString *)mycourseid{
     NSString *chapterstr = [NSString stringWithFormat:Video_Chapter_List,mycourseid];
@@ -795,21 +810,9 @@ singleton_implementation(VideoViewController)
                 chaptermodel.value = array;
                 [self.AllChapterArray addObject:chaptermodel];
             }
-            //alloc一个章节列表的table
-            //if(!self.chaptertableview){
-                self.chaptertableview = [[Chaptertableview alloc]init];
-                [self.view addSubview:self.chaptertableview];
-
-                [self.chaptertableview mas_makeConstraints:^(MASConstraintMaker *make) {
-                    //上，左，下，右
-                    make.right.offset(-20);
-                    make.left.offset(20);
-                    make.bottom.offset(-53);
-                    make.height.offset(150);
-                }];
-                self.chaptertableview.hidden = YES;
-            //}
-          
+            //初始化一个章节列表tableview
+            //[self creatchaptertableview];
+            
             //传courseid参数过去，
             self.chaptertableview.courseId = self.courceid;
             //章节的信息数组传过去
@@ -823,6 +826,9 @@ singleton_implementation(VideoViewController)
     } failureBlock:^(NSString *error) {
     }];
 }
+
+
+//每次点击显示章节列表，重新加载章节数据
 - (void)loadChapterrrDataWithCompletionHandle:(NSString *)mycourseid{
     NSString *chapterstr = [NSString stringWithFormat:Video_Chapter_List,mycourseid];
     [[NetworkSingleton sharedManager]postResultWithParameter:nil url:chapterstr successBlock:^(id responseBody) {
@@ -901,7 +907,6 @@ singleton_implementation(VideoViewController)
             NSString *chapername = [chaptername stringByAppendingString:valuemodel.name];
             dispatch_async(dispatch_get_main_queue(), ^{
                 //1.圆盘分类的名字2.章节名字3.老师简介
-                //self.CircleClassifyLabel.text = valuemodel.courseName;
                 self.ChapterNameLabel.text = chapername;
             });
         }
@@ -1115,11 +1120,6 @@ singleton_implementation(VideoViewController)
     [_progressSliderView setThumbImage:[UIImage imageNamed:@"sliderImageTouch.png"] forState:UIControlStateHighlighted];
 }
 
-- (UIStatusBarStyle)preferredStatusBarStyle {
-    
-    return UIStatusBarStyleLightContent;
-}
-
 - (BOOL)prefersStatusBarHidden
 {
     return NO; // 返回NO表示要显示，返回YES将hiden
@@ -1127,17 +1127,10 @@ singleton_implementation(VideoViewController)
 
 #pragma mark---- 拖动进度条状态改变
 - (void)progressSliderValueChanged:(UISlider *)sender{
-    
-    //[self availableDuration];
-    //NSLog(@"缓冲的时间---%f",[self availableDuration]);
-    
     // 调用setValue方法 刷新slider左边的label值
     _progressSliderView.value = sender.value;
-    //如果拖动的超过当前加载进度时 应该有提示框
+    //判断是否拖动到视频结束。若拖动到视频结束，则播放下一视频
     if (sender.value == sender.maximumValue) {
-        
-        //[self playbackFinished];
-        // 判断是否拖动到视频结束。若拖动到视频结束，则播放下一首
         _progressSliderView.value = sender.value - 1;
         NSLog(@"进度条的时间----%f",_progressSliderView.value);
         [self.player seekToTime:CMTimeMakeWithSeconds(_progressSliderView.value, self.player.currentTime.timescale)];
@@ -1356,29 +1349,11 @@ singleton_implementation(VideoViewController)
     
 }
 
-//#pragma mark - slider滑动事件
-//- (void)progressSlider:(UISlider *)slider
-//{
-//    //拖动改变视频播放进度
-//    if (_player.status == AVPlayerStatusReadyToPlay) {
-//        //计算出拖动的当前秒数
-//        CGFloat total = (CGFloat)_playerItem.duration.value / _playerItem.duration.timescale;
-//        NSInteger dragedSeconds = floorf(total * slider.value);
-//        //转换成CMTime才能给player来控制播放进度
-//        CMTime dragedCMTime = CMTimeMake(dragedSeconds, 1);
-//        [_player pause];
-//        [_player seekToTime:dragedCMTime completionHandler:^(BOOL finish){
-//            [_player play];
-//        }];
-//    }
-//}
-
 #pragma mark-
 #pragma mark---------------四个按钮的方法
 #pragma mark--章节按钮
 - (IBAction)chapterBtn:(id)sender {
-    //[self loadChapterDataWithCompletionHandle:self.courceid];
-    [self loadChapterrrDataWithCompletionHandle:self.courceid];
+    [self loadChapterDataWithCompletionHandle:self.courceid];
     self.chaptertableview.hidden = !self.chaptertableview.hidden;
 }
 
@@ -1496,7 +1471,7 @@ singleton_implementation(VideoViewController)
         
     }
     else if ((_gestureType == GestureTypeOfVolume) && (currentLocation.x > frame.size.width*0.5) && (ABS(offset_x) <= ABS(offset_y))){
-        NSLog(@"音量！！！");
+        NSLog(@"音量！！");
         if (offset_y > 0){
             [self volumeAdd:-VolumeStep];
         }else{
@@ -1538,7 +1513,6 @@ singleton_implementation(VideoViewController)
 //声音增加
 - (void)volumeAdd:(CGFloat)step{
     [MPMusicPlayerController applicationMusicPlayer].volume += step;
-    NSLog(@"%f",[MPMusicPlayerController applicationMusicPlayer].volume);
 }
 - (void)createBrightnessView
 {

@@ -13,18 +13,12 @@
 #import "ValueModel.h"
 #import "Singleton.h"
 
-typedef enum{
-    kPortrait = 1,          /**< 正常 */
-    kLandscapeLeft = 2,     /**< 左 */
-    kLandscapeRight = 3,    /**< 右 */
-}VideoDirection;
 @protocol VideoViewControllerDelegate <NSObject>
 
 @end
 
 @interface VideoViewController : UIViewController
 
-//+ (VideoViewController *)ShareVideo;
 
 - (IBAction)chapterBtn:(id)sender;//章节按钮
 - (IBAction)lastBtn:(id)sender;//上一个
