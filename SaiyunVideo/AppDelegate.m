@@ -7,6 +7,7 @@
 //
 
 #import "AppDelegate.h"
+#import "AppDelegate+UploadPlayTime.h"
 #import "LogInViewController.h"
 #import "GuideViewController.h"
 
@@ -28,6 +29,7 @@
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
+    //设置状态条的字颜色为白色
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:YES];
     //设置侧栏
     VideoViewController *center = [[VideoViewController alloc]init];
@@ -44,7 +46,8 @@
     
     //监听网络的方法
     [self startMonitor];
-        BOOL ssss = [[NSUserDefaults standardUserDefaults]boolForKey:LogSuccess];
+    
+    BOOL ssss = [[NSUserDefaults standardUserDefaults]boolForKey:LogSuccess];
     if(!ssss){
         FirstViewController *firstvc = [[FirstViewController alloc]init];
         UINavigationController *fa = [[UINavigationController alloc]initWithRootViewController:firstvc];
@@ -69,36 +72,9 @@
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {
     //如果是第一个登录界面，退出后台时就会闪退
-    //进入后台
     NSLog(@"进入后台");
-    [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"ISNOTICE"];
-    [[NSUserDefaults standardUserDefaults]synchronize];
-    NSString *studystr = [[NSUserDefaults standardUserDefaults]objectForKey:StudyTime];
-    NSString *totalstr = [[NSUserDefaults standardUserDefaults]objectForKey:TotalTime];
-    NSString *wareid = [[NSUserDefaults standardUserDefaults]objectForKey:CoursewareID];
-    NSString *courid = [[NSUserDefaults standardUserDefaults]objectForKey:@"valuemodelid"];
-    if ([studystr intValue] != 0||studystr != nil) {
-        if (wareid == nil) {
-            NSDictionary *dict = @{@"coursewareId":courid,@"studyTime":studystr,@"totalTime":totalstr};
-            //如果有视频播放再上传时间
-            [[NetworkSingleton sharedManager]getResultWithParameter:dict url:String_Save_Video_Exit_Info successBlock:^(id responseBody) {
-                NSLog(@"后台上传播放时间成功---%@--%@",responseBody[@"result"],responseBody[@"msg"]);
-                
-            } failureBlock:^(NSString *error) {
-                NSLog(@"上传播放时间失败");
-            }];
-        }else{
-        NSDictionary *dict = @{@"coursewareId":wareid,@"studyTime":studystr,@"totalTime":totalstr};
-        
-        //如果有视频播放再上传时间
-        [[NetworkSingleton sharedManager]getResultWithParameter:dict url:String_Save_Video_Exit_Info successBlock:^(id responseBody) {
-            NSLog(@"后台上传播放时间成功---%@--%@",responseBody[@"result" ],responseBody[@"msg"]);
-            
-        } failureBlock:^(NSString *error) {
-            NSLog(@"上传播放时间失败");
-        }];
-       }
-    }
+    //进入后台时上传播放时间
+    [self uploadplaytime];
 }
 
 

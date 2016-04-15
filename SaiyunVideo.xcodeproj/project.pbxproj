@@ -18,6 +18,7 @@
 		C776E4731C4F73990005DBF2 /* TestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C776E4711C4F73990005DBF2 /* TestViewController.m */; };
 		C776E4741C4F73990005DBF2 /* TestViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C776E4721C4F73990005DBF2 /* TestViewController.xib */; };
 		C7B6322A1CBE4CF00091C9D2 /* AppDelegate+XBNetworkingMonitor.m in Sources */ = {isa = PBXBuildFile; fileRef = C7B632291CBE4CF00091C9D2 /* AppDelegate+XBNetworkingMonitor.m */; };
+		C7B632A21CC092D90091C9D2 /* AppDelegate+UploadPlayTime.m in Sources */ = {isa = PBXBuildFile; fileRef = C7B632A11CC092D90091C9D2 /* AppDelegate+UploadPlayTime.m */; };
 		C7C89DF91CA50A0E00B6DF10 /* AnimationView.m in Sources */ = {isa = PBXBuildFile; fileRef = C7C89DF81CA50A0E00B6DF10 /* AnimationView.m */; };
 		C7C89DFD1CA50CB600B6DF10 /* ExitCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C7C89DFA1CA50CB600B6DF10 /* ExitCell.xib */; };
 		C7C89DFE1CA50CB600B6DF10 /* ExitCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C7C89DFB1CA50CB600B6DF10 /* ExitCell.m */; };
@@ -117,6 +118,8 @@
 		C776E4721C4F73990005DBF2 /* TestViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TestViewController.xib; sourceTree = "<group>"; };
 		C7B632281CBE4CF00091C9D2 /* AppDelegate+XBNetworkingMonitor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AppDelegate+XBNetworkingMonitor.h"; sourceTree = "<group>"; };
 		C7B632291CBE4CF00091C9D2 /* AppDelegate+XBNetworkingMonitor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AppDelegate+XBNetworkingMonitor.m"; sourceTree = "<group>"; };
+		C7B632A01CC092D90091C9D2 /* AppDelegate+UploadPlayTime.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AppDelegate+UploadPlayTime.h"; sourceTree = "<group>"; };
+		C7B632A11CC092D90091C9D2 /* AppDelegate+UploadPlayTime.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AppDelegate+UploadPlayTime.m"; sourceTree = "<group>"; };
 		C7C89DF71CA50A0E00B6DF10 /* AnimationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnimationView.h; sourceTree = "<group>"; };
 		C7C89DF81CA50A0E00B6DF10 /* AnimationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnimationView.m; sourceTree = "<group>"; };
 		C7C89DFA1CA50CB600B6DF10 /* ExitCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ExitCell.xib; sourceTree = "<group>"; };
@@ -280,8 +283,7 @@
 		C70038981BFAC1070043A247 /* AppDelegate */ = {
 			isa = PBXGroup;
 			children = (
-				C7B632281CBE4CF00091C9D2 /* AppDelegate+XBNetworkingMonitor.h */,
-				C7B632291CBE4CF00091C9D2 /* AppDelegate+XBNetworkingMonitor.m */,
+				C7B632A31CC0951C0091C9D2 /* Category */,
 				C7FD71BE1BF97DD200437DB6 /* AppDelegate.h */,
 				C7FD71BF1BF97DD200437DB6 /* AppDelegate.m */,
 			);
@@ -358,6 +360,17 @@
 				C7E660871C53895E009DBA77 /* TestResultViewController.xib */,
 			);
 			name = VC;
+			sourceTree = "<group>";
+		};
+		C7B632A31CC0951C0091C9D2 /* Category */ = {
+			isa = PBXGroup;
+			children = (
+				C7B632281CBE4CF00091C9D2 /* AppDelegate+XBNetworkingMonitor.h */,
+				C7B632291CBE4CF00091C9D2 /* AppDelegate+XBNetworkingMonitor.m */,
+				C7B632A01CC092D90091C9D2 /* AppDelegate+UploadPlayTime.h */,
+				C7B632A11CC092D90091C9D2 /* AppDelegate+UploadPlayTime.m */,
+			);
+			name = Category;
 			sourceTree = "<group>";
 		};
 		C7C89DF61CA509F300B6DF10 /* StartAnimat */ = {
@@ -860,6 +873,7 @@
 				C7E917941C4605CA000C8DB8 /* Chaptertableview.m in Sources */,
 				C70038AC1BFB0FDA0043A247 /* ViewController.m in Sources */,
 				C7F1228B1C070C190001F2AF /* Tool.m in Sources */,
+				C7B632A21CC092D90091C9D2 /* AppDelegate+UploadPlayTime.m in Sources */,
 				C7C89DF91CA50A0E00B6DF10 /* AnimationView.m in Sources */,
 				C7C89E181CB6282C00B6DF10 /* FirstViewController.m in Sources */,
 				C704DCEE1C4C992500038CA4 /* CollegeListtableview.m in Sources */,
@@ -1032,6 +1046,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				TARGETED_DEVICE_FAMILY = 1;
 				USER_HEADER_SEARCH_PATHS = "${SRCROOT}/**";
 			};
 			name = Debug;
@@ -1050,6 +1065,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				TARGETED_DEVICE_FAMILY = 1;
 				USER_HEADER_SEARCH_PATHS = "${SRCROOT}/**";
 			};
 			name = Release;
