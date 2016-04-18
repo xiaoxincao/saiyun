@@ -130,6 +130,7 @@
 #define NavColor [UIColor colorWithRed:92/255.0 green:191/255.0 blue:234/255.0 alpha:1]
 
 #define NetworkViaWWAN @"is4g"
+#define Flow @"4g"
 
 #define LogSuccess @"LoginSuccess"
 #define Header @"photo"

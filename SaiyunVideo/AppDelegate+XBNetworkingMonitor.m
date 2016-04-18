@@ -26,7 +26,7 @@
         else if (status == AFNetworkReachabilityStatusReachableViaWWAN)
         {
             NSLog(@"运营商网络");
-            [[NSUserDefaults standardUserDefaults]setBool:YES forKey:@"4g"];
+            [[NSUserDefaults standardUserDefaults]setBool:YES forKey:Flow];
             [[NSUserDefaults standardUserDefaults]setBool:NO forKey:@"noreachable"];
             [[NSUserDefaults standardUserDefaults]synchronize];
             //当4g网络时发送通知
@@ -35,7 +35,7 @@
             [[Tool SharedInstance]showtoast:@"当前为运营商网络，请注意流量的使用"];
         }else if(status == AFNetworkReachabilityStatusReachableViaWiFi){
             NSLog(@"WiFi网络");
-            [[NSUserDefaults standardUserDefaults]setBool:NO forKey:@"4g"];
+            [[NSUserDefaults standardUserDefaults]setBool:NO forKey:Flow];
             [[NSUserDefaults standardUserDefaults]setBool:NO forKey:@"noreachable"];
             [[NSUserDefaults standardUserDefaults]synchronize];
 

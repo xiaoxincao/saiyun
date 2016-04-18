@@ -19,6 +19,8 @@
 		C776E4741C4F73990005DBF2 /* TestViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C776E4721C4F73990005DBF2 /* TestViewController.xib */; };
 		C7B6322A1CBE4CF00091C9D2 /* AppDelegate+XBNetworkingMonitor.m in Sources */ = {isa = PBXBuildFile; fileRef = C7B632291CBE4CF00091C9D2 /* AppDelegate+XBNetworkingMonitor.m */; };
 		C7B632A21CC092D90091C9D2 /* AppDelegate+UploadPlayTime.m in Sources */ = {isa = PBXBuildFile; fileRef = C7B632A11CC092D90091C9D2 /* AppDelegate+UploadPlayTime.m */; };
+		C7B632AB1CC4AC310091C9D2 /* WebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C7B632A91CC4AC310091C9D2 /* WebViewController.m */; };
+		C7B632AC1CC4AC310091C9D2 /* WebViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C7B632AA1CC4AC310091C9D2 /* WebViewController.xib */; };
 		C7C89DF91CA50A0E00B6DF10 /* AnimationView.m in Sources */ = {isa = PBXBuildFile; fileRef = C7C89DF81CA50A0E00B6DF10 /* AnimationView.m */; };
 		C7C89DFD1CA50CB600B6DF10 /* ExitCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C7C89DFA1CA50CB600B6DF10 /* ExitCell.xib */; };
 		C7C89DFE1CA50CB600B6DF10 /* ExitCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C7C89DFB1CA50CB600B6DF10 /* ExitCell.m */; };
@@ -120,6 +122,9 @@
 		C7B632291CBE4CF00091C9D2 /* AppDelegate+XBNetworkingMonitor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AppDelegate+XBNetworkingMonitor.m"; sourceTree = "<group>"; };
 		C7B632A01CC092D90091C9D2 /* AppDelegate+UploadPlayTime.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AppDelegate+UploadPlayTime.h"; sourceTree = "<group>"; };
 		C7B632A11CC092D90091C9D2 /* AppDelegate+UploadPlayTime.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AppDelegate+UploadPlayTime.m"; sourceTree = "<group>"; };
+		C7B632A81CC4AC310091C9D2 /* WebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebViewController.h; sourceTree = "<group>"; };
+		C7B632A91CC4AC310091C9D2 /* WebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebViewController.m; sourceTree = "<group>"; };
+		C7B632AA1CC4AC310091C9D2 /* WebViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WebViewController.xib; sourceTree = "<group>"; };
 		C7C89DF71CA50A0E00B6DF10 /* AnimationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnimationView.h; sourceTree = "<group>"; };
 		C7C89DF81CA50A0E00B6DF10 /* AnimationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnimationView.m; sourceTree = "<group>"; };
 		C7C89DFA1CA50CB600B6DF10 /* ExitCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ExitCell.xib; sourceTree = "<group>"; };
@@ -371,6 +376,16 @@
 				C7B632A11CC092D90091C9D2 /* AppDelegate+UploadPlayTime.m */,
 			);
 			name = Category;
+			sourceTree = "<group>";
+		};
+		C7B632A71CC4ABD10091C9D2 /* Webview */ = {
+			isa = PBXGroup;
+			children = (
+				C7B632A81CC4AC310091C9D2 /* WebViewController.h */,
+				C7B632A91CC4AC310091C9D2 /* WebViewController.m */,
+				C7B632AA1CC4AC310091C9D2 /* WebViewController.xib */,
+			);
+			name = Webview;
 			sourceTree = "<group>";
 		};
 		C7C89DF61CA509F300B6DF10 /* StartAnimat */ = {
@@ -669,6 +684,7 @@
 		C7FD71EF1BF9DC0C00437DB6 /* Video */ = {
 			isa = PBXGroup;
 			children = (
+				C7B632A71CC4ABD10091C9D2 /* Webview */,
 				C7E797A31C1565250076AE62 /* View */,
 				C7E4D1F01C113B6100EE2FA3 /* VideoVC */,
 				C7E7D08D1C0BEFA6006D896B /* Model */,
@@ -774,6 +790,7 @@
 				C7C89DFD1CA50CB600B6DF10 /* ExitCell.xib in Resources */,
 				C7F37DFD1C3122B6005DA488 /* MyTraceTableViewCell.xib in Resources */,
 				C7F122981C070E5D0001F2AF /* RegisterViewController.xib in Resources */,
+				C7B632AC1CC4AC310091C9D2 /* WebViewController.xib in Resources */,
 				C7E660891C53895E009DBA77 /* TestResultViewController.xib in Resources */,
 				C7FD71C61BF97DD200437DB6 /* Main.storyboard in Resources */,
 				C70038B11BFB190D0043A247 /* MenuViewController.xib in Resources */,
@@ -880,6 +897,7 @@
 				C7E7D07D1C0BDDDD006D896B /* SettingTableViewController.m in Sources */,
 				C7FD71C01BF97DD200437DB6 /* AppDelegate.m in Sources */,
 				C7E660791C50C79D009DBA77 /* TestResultModel.m in Sources */,
+				C7B632AB1CC4AC310091C9D2 /* WebViewController.m in Sources */,
 				C7C89E211CB8C59200B6DF10 /* KSGuideManager.m in Sources */,
 				C7F6B19D1C0DA7B70021BABC /* ChaptersModel.m in Sources */,
 				C7E57CF91C08048200BF5C3B /* JKCountDownButton.m in Sources */,

@@ -24,7 +24,7 @@
 
 #import "Chaptertableview.h"
 #import "CollectionViewController.h"
-
+#import "WebViewController.h"
 #import "Singleton.h"
 
 
@@ -54,6 +54,8 @@ typedef NS_ENUM(NSInteger, GestureType){
 @property(nonatomic, strong) UIView *circleview;
 @property(nonatomic, strong) UIView *blackview;
 @property(nonatomic, strong) UIView *squareview;//旋转的方形view
+@property(nonatomic, strong)UIView *adview;
+@property(nonatomic, strong)UIView *clearview;
 @property(nonatomic, assign) BOOL hiddecircle;//上下两个view的隐藏
 @property(nonatomic, strong)UILabel *subtitlesLabel;
 @property(nonatomic, strong)UIButton *rightBtn;
@@ -311,6 +313,7 @@ singleton_implementation(VideoViewController)
     [self setVideoNavigation];
     //初始化VideoView
     [self setVideoViewFrame];
+    [self setadview];
     //初始化进度条的UI
     [self initProgressUI];
     //点击屏幕显示圆环
@@ -463,6 +466,47 @@ singleton_implementation(VideoViewController)
     [self.BGimageView addSubview:self.VideoView];
 }
 
+- (void)setadview
+{
+    CGFloat X = 0;
+    CGFloat Y = kVideoY;
+    CGFloat Width = kScreenWidth;
+    CGFloat Height = 40;
+    
+    self.adview = [[UIView alloc]initWithFrame:CGRectMake(X, (Y+kVideoHeight), Width, Height)];
+    self.adview.backgroundColor = [UIColor grayColor];
+    self.adview.alpha = 0.5;
+    self.clearview = [[UIView alloc]initWithFrame:CGRectMake(X, (Y+kVideoHeight), Width, Height)];
+    
+    UIImageView *yunimage = [[UIImageView alloc]initWithFrame:CGRectMake(0, 5, 30, 30)];
+    yunimage.image = [UIImage imageNamed:@"yun144@3x"];
+    
+    UILabel *textlabel = [[UILabel alloc]initWithFrame:CGRectMake(30, 0, Width-30-80, Height)];
+    textlabel.text = @"云谷创课，今天你创业了么？";
+    textlabel.font = [UIFont systemFontOfSize:15];
+    textlabel.textColor = [UIColor whiteColor];
+    
+    UIButton *enterbtn = [UIButton buttonWithType:UIButtonTypeSystem];
+    enterbtn.frame = CGRectMake(Width-80, 0, 60, Height);
+    [enterbtn setTitle:@"点击进入" forState:UIControlStateNormal];
+    [enterbtn setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
+    [enterbtn addTarget:self action:@selector(enterbtn) forControlEvents:UIControlEventTouchUpInside];
+    
+    UIButton *exitbtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    exitbtn.frame = CGRectMake(Width-20, 0, 20, 20);
+    [exitbtn setImage:[UIImage imageNamed:@"close"] forState:UIControlStateNormal];
+    [exitbtn addTarget:self action:@selector(hiddeview) forControlEvents:UIControlEventTouchUpInside];
+    
+    
+    
+    [self.clearview addSubview:yunimage];
+    [self.clearview addSubview:textlabel];
+    [self.clearview addSubview:enterbtn];
+    [self.clearview addSubview:exitbtn];
+    [_BGimageView addSubview:self.adview];
+    [_BGimageView addSubview:self.clearview];
+}
+
 #pragma mark----初始化章节tableview
 - (void)creatchaptertableview
 {
@@ -479,7 +523,17 @@ singleton_implementation(VideoViewController)
     self.chaptertableview.hidden = YES;
 }
 
+- (void)enterbtn
+{
+    WebViewController *web = [[WebViewController alloc]init];
+    [self.navigationController pushViewController:web animated:YES];
+}
 
+- (void)hiddeview
+{
+    self.adview.hidden = YES;
+    self.clearview.hidden = YES;
+}
 
 #pragma mark -
 #pragma mark -运营商网下发出的通知方法
@@ -932,7 +986,7 @@ singleton_implementation(VideoViewController)
 #pragma mark---------------以下全是播放器的代码
 #pragma mark--传url播放视频之前判断网络状况
 - (void)setVideo:(NSString *)videoStr{
-    BOOL is4g = [[NSUserDefaults standardUserDefaults]boolForKey:@"4g"];
+    BOOL is4g = [[NSUserDefaults standardUserDefaults]boolForKey:Flow];
     if (is4g) {
         self.on = [[NSUserDefaults standardUserDefaults]boolForKey:ON];
         if (!self.on) {
@@ -949,7 +1003,7 @@ singleton_implementation(VideoViewController)
         [self playVideo:videoStr];
     }
 }
-
+#pragma mark--设置AVPlayer
 - (void)playVideo:(NSString *)videoStr{
     NSURL *sourceMovieURl = [NSURL URLWithString:videoStr]
     ;
@@ -958,7 +1012,6 @@ singleton_implementation(VideoViewController)
     if(self.player){
         NSLog(@"222");
         [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
-        //self.hud.hidden = YES;
         //切换视频时，将字幕label置为空
         _subtitlesLabel.text = nil;
         [self removeOBserverFromPlayer:self.player];
@@ -971,11 +1024,6 @@ singleton_implementation(VideoViewController)
         NSLog(@"333");
     }
     else{
-//        self.hud = [[MBProgressHUD alloc]initWithView:self.view];
-//        [self.view addSubview: self.hud];
-//        self.hud.labelText = @"加载视频数据中...";
-//        [self.hud show:YES];
-        //[self removeOBserverFromPlayer:self.player];
         [MBProgressHUD showHUDAddedTo:self.view animated:YES];
         self.player = [AVPlayer playerWithPlayerItem:self.playerItem];
         self.playerLayer = [AVPlayerLayer playerLayerWithPlayer:_player];
@@ -988,13 +1036,13 @@ singleton_implementation(VideoViewController)
     [self.player play];
  
 }
-#pragma mark----添加通知 监控播放状态
+#pragma mark---添加通知 监控播放状态
 - (void)addObserverToPlayer:(AVPlayer *)player
 {
     NSLog(@"注册监听");
     [player addObserver:self forKeyPath:@"currentItem.status" options:NSKeyValueObservingOptionNew context:nil];
 }
-#pragma mark----注销通知
+#pragma mark--注销通知
 - (void)removeOBserverFromPlayer:(AVPlayer *)player
 {
     [player removeObserver:self forKeyPath:@"currentItem.status"];
@@ -1002,7 +1050,7 @@ singleton_implementation(VideoViewController)
 
 
 
-#pragma mark - 监听播放缓冲事件
+#pragma mark -- 监听播放缓冲事件
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
     NSLog(@"进入监听");
@@ -1028,7 +1076,7 @@ singleton_implementation(VideoViewController)
                     [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
                     //self.hud.hidden = YES;
                     [self.player play];
-                    [self updateUI];
+                    [self updateplaybtnUI];
                     _progressSliderView.maximumValue = CMTimeGetSeconds(_player.currentItem.duration);
                     //进度条的定时器
                     self.timer = [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(timeAction) userInfo:nil repeats:YES];
@@ -1062,8 +1110,74 @@ singleton_implementation(VideoViewController)
     }
 }
 
+#pragma mark----设置字幕数组
+- (void)setSubstitle:(NSString *)vttstr
+{
+    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:vttstr]];
+    NSURLSession *session = [NSURLSession sharedSession];
+    NSURLSessionTask *dataTask = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+        if (!error) {
+            // GBK编码
+            //NSStringEncoding enc = CFStringConvertEncodingToNSStringEncoding(kCFStringEncodingGB_18030_2000);
+            // 解码
+            NSString *string = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+            
+            //按行分割存放到数组中
+            NSArray *singlearray = [string componentsSeparatedByString:@"\n"];
+            
+            
+            _subtitlesarray = [NSMutableArray array];
+            _begintimearray = [NSMutableArray array];
+            _endtimearray = [NSMutableArray array];
+            
+            //遍历存放所有行的数组
+            for (NSString *ss in singlearray) {
+                
+                //NSRange range = [ss rangeOfString:@"{\\a3}"];
+                
+                NSRange range2 = [ss rangeOfString:@" --> "];
+                
+                if (range2.location != NSNotFound) {
+                    
+                    NSString *beginstr = [ss substringToIndex:range2.location];
+                    NSString *endstr = [ss substringFromIndex:range2.location+range2.length];
+                    
+                    NSArray * arr = [beginstr componentsSeparatedByString:@":"];
+                    NSArray * arr1 = [arr[2] componentsSeparatedByString:@","];
+                    
+                    //将开始时间数组中的时间换化成秒为单位的
+                    float teim=[arr[0] floatValue] * 60*60 + [arr[1] floatValue]*60 + [arr1[0] floatValue] + [arr1[1] floatValue]/1000;
+                    //将float类型转化成NSNumber类型才能存入数组
+                    NSNumber *beginnum = [NSNumber numberWithFloat:teim];
+                    [_begintimearray addObject:beginnum];
+                    
+                    NSArray * array = [endstr componentsSeparatedByString:@":"];
+                    NSArray * arr2 = [array[2] componentsSeparatedByString:@","];
+                    
+                    //将结束时间数组中的时间换化成秒为单位的
+                    float fl=[array[0] floatValue] * 60*60 + [array[1] floatValue]*60 + [arr2[0] floatValue] + [arr2[1] floatValue]/1000;
+                    NSNumber *endnum = [NSNumber numberWithFloat:fl];
+                    [_endtimearray addObject:endnum];
+                }
+            }
+            for (int i = 0; i<singlearray.count; i++) {
+                if (i != 0) {
+                    if(4*i<singlearray.count){
+                        [_subtitlesarray addObject:singlearray[4*i]];
+                    }
+                }else{
+                    
+                }
+            }
+        }else{
+            NSLog(@"error  is  %@",error.localizedDescription);
+        }
+    }];
+    [dataTask resume];
+}
 
-#pragma mark -播放结束的方法
+
+#pragma mark --播放结束的方法
 - (void)playbackFinished
 {
     //播放结束时进入下一个课程
@@ -1111,7 +1225,7 @@ singleton_implementation(VideoViewController)
     [self loadplayinfo:nextid];
 }
 
-#pragma mark---- 进度条样式的设置
+#pragma mark--进度条样式的设置
 - (void)initProgressUI{
     [_progressSliderView addTarget:self action:@selector(progressSliderValueChanged:) forControlEvents:UIControlEventValueChanged];
     _progressSliderView.maximumValue = 0.0;
@@ -1120,12 +1234,8 @@ singleton_implementation(VideoViewController)
     [_progressSliderView setThumbImage:[UIImage imageNamed:@"sliderImageTouch.png"] forState:UIControlStateHighlighted];
 }
 
-- (BOOL)prefersStatusBarHidden
-{
-    return NO; // 返回NO表示要显示，返回YES将hiden
-}
 
-#pragma mark---- 拖动进度条状态改变
+#pragma mark--拖动进度条状态改变
 - (void)progressSliderValueChanged:(UISlider *)sender{
     // 调用setValue方法 刷新slider左边的label值
     _progressSliderView.value = sender.value;
@@ -1144,7 +1254,6 @@ singleton_implementation(VideoViewController)
     }
 }
 
-
 #pragma mark  计算当前视频缓冲进度
 - (NSTimeInterval)availableDuration {
     
@@ -1161,80 +1270,8 @@ singleton_implementation(VideoViewController)
     return result;
 }
 
-
-
-
-
-
-#pragma mark----设置字幕数组
-- (void)setSubstitle:(NSString *)vttstr
-{
-    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:vttstr]];
-    NSURLSession *session = [NSURLSession sharedSession];
-    NSURLSessionTask *dataTask = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-        if (!error) {
-            // GBK编码
-            //NSStringEncoding enc = CFStringConvertEncodingToNSStringEncoding(kCFStringEncodingGB_18030_2000);
-            // 解码
-            NSString *string = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-            
-            //按行分割存放到数组中
-            NSArray *singlearray = [string componentsSeparatedByString:@"\n"];
-            
-            
-            _subtitlesarray = [NSMutableArray array];
-            _begintimearray = [NSMutableArray array];
-            _endtimearray = [NSMutableArray array];
-            
-            //遍历存放所有行的数组
-            for (NSString *ss in singlearray) {
-                
-                //NSRange range = [ss rangeOfString:@"{\\a3}"];
-                
-                NSRange range2 = [ss rangeOfString:@" --> "];
-
-                if (range2.location != NSNotFound) {
-                    
-                    NSString *beginstr = [ss substringToIndex:range2.location];
-                    NSString *endstr = [ss substringFromIndex:range2.location+range2.length];
-                    
-                    NSArray * arr = [beginstr componentsSeparatedByString:@":"];
-                    NSArray * arr1 = [arr[2] componentsSeparatedByString:@","];
-                    
-                    //将开始时间数组中的时间换化成秒为单位的
-                    float teim=[arr[0] floatValue] * 60*60 + [arr[1] floatValue]*60 + [arr1[0] floatValue] + [arr1[1] floatValue]/1000;
-                    //将float类型转化成NSNumber类型才能存入数组
-                    NSNumber *beginnum = [NSNumber numberWithFloat:teim];
-                    [_begintimearray addObject:beginnum];
-                    
-                    NSArray * array = [endstr componentsSeparatedByString:@":"];
-                    NSArray * arr2 = [array[2] componentsSeparatedByString:@","];
-                    
-                    //将结束时间数组中的时间换化成秒为单位的
-                    float fl=[array[0] floatValue] * 60*60 + [array[1] floatValue]*60 + [arr2[0] floatValue] + [arr2[1] floatValue]/1000;
-                    NSNumber *endnum = [NSNumber numberWithFloat:fl];
-                    [_endtimearray addObject:endnum];
-                }
-            }
-            for (int i = 0; i<singlearray.count; i++) {
-                if (i != 0) {
-                    if(4*i<singlearray.count){
-                        [_subtitlesarray addObject:singlearray[4*i]];
-                    }
-                }else{
-                    
-                }
-            }
-        }else{
-            NSLog(@"error  is  %@",error.localizedDescription);
-        }
-    }];
-    [dataTask resume];
-}
-
-
 #pragma mark---- 播放按钮UI的改变
-- (void)updateUI
+- (void)updateplaybtnUI
 {
     NSLog(@"播放速率--%f",self.player.rate);
     if (self.player.rate == 1) {
@@ -1267,15 +1304,12 @@ singleton_implementation(VideoViewController)
         [_playproperty setImage:[UIImage imageNamed:@"play"] forState:UIControlStateNormal];
     }
 }
-#pragma mark---- 进度条的改变,测试的UI，同步字幕 保存当前播放信息
+#pragma mark---- 进度条的改变,同步字幕 保存当前播放信息
 //进度条的定时器执行的方法
 - (void)timeAction
 {
-    
-    
     //判断4g网络下，且开关没打开的时候，暂停视频播放，如果开关打开了，就不用管了
-    
-    BOOL is4g = [[NSUserDefaults standardUserDefaults]boolForKey:@"4g"];
+    BOOL is4g = [[NSUserDefaults standardUserDefaults]boolForKey:Flow];
     if (is4g) {
         self.on = [[NSUserDefaults standardUserDefaults]boolForKey:ON];
         //4g网络下,开关没打开
@@ -1325,17 +1359,14 @@ singleton_implementation(VideoViewController)
         }
     }
     
-    
     if (currentSecond == (int)CMTimeGetSeconds(self.player.currentItem.duration)) {
         //当当前时间和总时间相等时，且总时间不为0时，就是播放结束时，执行播放结束的方法
         if ((int)CMTimeGetSeconds(self.player.currentItem.duration) != 0) {
             [self playbackFinished];
         }
         [self.player pause];
-        [self updateUI];
+        [self updateplaybtnUI];
     }
-    
-    
     //存放课程的信息当前播放时间需要调整！！！！！！！！！！！！！？？？？？？
     NSInteger playtime = CMTimeGetSeconds(self.player.currentTime);
     NSInteger totaltime = CMTimeGetSeconds(self.player.currentItem.duration);
@@ -1383,7 +1414,7 @@ singleton_implementation(VideoViewController)
             [self.player play];
         }
     }
-    [self updateUI];
+    [self updateplaybtnUI];
 }
 
 #pragma mark--下一个
@@ -1526,6 +1557,10 @@ singleton_implementation(VideoViewController)
     [_brightnessView addSubview:_brightnessProgress];
     [self.VideoView addSubview:_brightnessView];
     _brightnessView.alpha = 0;
+}
+- (BOOL)prefersStatusBarHidden
+{
+    return NO; // 返回NO表示要显示，返回YES将hiden
 }
 
 
