@@ -28,6 +28,7 @@
 #import "Singleton.h"
 #import "VideoView.h"
 #import "ADView.h"
+#import "CircleView.h"
 
 
 #define WIDTH 150
@@ -53,7 +54,7 @@ typedef NS_ENUM(NSInteger, GestureType){
 
 @property (nonatomic,assign) GestureType gestureType;/**< 手势操作类型 */
 @property(nonatomic, strong) UIButton *selectedLuckyWheelButton;
-@property(nonatomic, strong) UIView *circleview;
+@property(nonatomic, strong) CircleView *circleview;
 @property(nonatomic, strong) UIView *blackview;
 @property(nonatomic, strong) UIView *squareview;//旋转的方形view
 @property(nonatomic, strong)UIView *adview;
@@ -548,27 +549,14 @@ singleton_implementation(VideoViewController)
 {
     //黑色阴影view
     _blackview = [[UIView alloc]initWithFrame:CGRectMake(0, kVideoY-50,kCircleWH , kCircleWH)];
-    //_blackview = [[UIView alloc]init];
     _blackview.backgroundColor = [UIColor blackColor];
     _blackview.alpha = 0.5;
     _blackview.layer.cornerRadius = kCircleWH/2;
     
     //clear颜色的view
-    _circleview = [[UIView alloc]initWithFrame:CGRectMake(0, kVideoY-50,kCircleWH , kCircleWH)];
+    _circleview = [[CircleView alloc]initWithFrame:CGRectMake(0, kVideoY-50,kCircleWH , kCircleWH)];
     _circleview.backgroundColor = [UIColor clearColor];
     _circleview.layer.cornerRadius = kCircleWH/2;
-    
-    //中间带图片的圆形imageview
-    self.centerimg = [[UIImageView alloc]init];
-    self.centerimg.image = [UIImage imageNamed:@"yun"];
-    [UIImage createRoundedRectImage:self.centerimg.image size:CGSizeMake(kCircleWH-60, kCircleWH-60) radius:(kCircleWH-60)/2];
-    self.centerimg.layer.masksToBounds=YES;
-    
-    
-    [_circleview addSubview:self.centerimg];
-    [self.centerimg mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.edges.equalTo(_circleview).with.insets(UIEdgeInsetsMake(30, 30, 30, 30));
-    }];
     
     _circleview.center = self.videoview.center;
     _blackview.center = self.videoview.center;
@@ -711,9 +699,9 @@ singleton_implementation(VideoViewController)
                 NSMutableString *str1 = [NSMutableString stringWithString:str];
                 NSString *str2 = [Port stringByAppendingString:str1];
                 NSURL *url = [NSURL URLWithString:str2];
-                self.centerimg.layer.cornerRadius = (kCircleWH-60)/2;
-                self.centerimg.layer.masksToBounds=YES;
-                [self.centerimg sd_setImageWithURL:url placeholderImage:[UIImage imageNamed:@"yun"]];
+                self.circleview.centerimg.layer.cornerRadius = (kCircleWH-60)/2;
+                self.circleview.centerimg.layer.masksToBounds=YES;
+                [self.circleview.centerimg sd_setImageWithURL:url placeholderImage:[UIImage imageNamed:@"yun"]];
             }
             self.courceid = model.id;
             self.courcewareid = model.coursewareId;
