@@ -21,6 +21,10 @@
 		C7B632A21CC092D90091C9D2 /* AppDelegate+UploadPlayTime.m in Sources */ = {isa = PBXBuildFile; fileRef = C7B632A11CC092D90091C9D2 /* AppDelegate+UploadPlayTime.m */; };
 		C7B632AB1CC4AC310091C9D2 /* WebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C7B632A91CC4AC310091C9D2 /* WebViewController.m */; };
 		C7B632AC1CC4AC310091C9D2 /* WebViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C7B632AA1CC4AC310091C9D2 /* WebViewController.xib */; };
+		C7B632EE1CC4DEB30091C9D2 /* VideoView.m in Sources */ = {isa = PBXBuildFile; fileRef = C7B632ED1CC4DEB30091C9D2 /* VideoView.m */; };
+		C7B632F11CC4E9B60091C9D2 /* ADView.m in Sources */ = {isa = PBXBuildFile; fileRef = C7B632F01CC4E9B60091C9D2 /* ADView.m */; };
+		C7B632F71CC5CA160091C9D2 /* CircleView.m in Sources */ = {isa = PBXBuildFile; fileRef = C7B632F61CC5CA160091C9D2 /* CircleView.m */; };
+		C7B632FA1CC5D64D0091C9D2 /* VideoPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = C7B632F91CC5D64D0091C9D2 /* VideoPlayer.m */; };
 		C7C89DF91CA50A0E00B6DF10 /* AnimationView.m in Sources */ = {isa = PBXBuildFile; fileRef = C7C89DF81CA50A0E00B6DF10 /* AnimationView.m */; };
 		C7C89DFD1CA50CB600B6DF10 /* ExitCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C7C89DFA1CA50CB600B6DF10 /* ExitCell.xib */; };
 		C7C89DFE1CA50CB600B6DF10 /* ExitCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C7C89DFB1CA50CB600B6DF10 /* ExitCell.m */; };
@@ -125,6 +129,14 @@
 		C7B632A81CC4AC310091C9D2 /* WebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebViewController.h; sourceTree = "<group>"; };
 		C7B632A91CC4AC310091C9D2 /* WebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebViewController.m; sourceTree = "<group>"; };
 		C7B632AA1CC4AC310091C9D2 /* WebViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WebViewController.xib; sourceTree = "<group>"; };
+		C7B632EC1CC4DEB30091C9D2 /* VideoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoView.h; sourceTree = "<group>"; };
+		C7B632ED1CC4DEB30091C9D2 /* VideoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoView.m; sourceTree = "<group>"; };
+		C7B632EF1CC4E9B60091C9D2 /* ADView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADView.h; sourceTree = "<group>"; };
+		C7B632F01CC4E9B60091C9D2 /* ADView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADView.m; sourceTree = "<group>"; };
+		C7B632F51CC5CA160091C9D2 /* CircleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CircleView.h; sourceTree = "<group>"; };
+		C7B632F61CC5CA160091C9D2 /* CircleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CircleView.m; sourceTree = "<group>"; };
+		C7B632F81CC5D64D0091C9D2 /* VideoPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoPlayer.h; sourceTree = "<group>"; };
+		C7B632F91CC5D64D0091C9D2 /* VideoPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoPlayer.m; sourceTree = "<group>"; };
 		C7C89DF71CA50A0E00B6DF10 /* AnimationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnimationView.h; sourceTree = "<group>"; };
 		C7C89DF81CA50A0E00B6DF10 /* AnimationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnimationView.m; sourceTree = "<group>"; };
 		C7C89DFA1CA50CB600B6DF10 /* ExitCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ExitCell.xib; sourceTree = "<group>"; };
@@ -432,6 +444,14 @@
 			children = (
 				C7E797A41C1565450076AE62 /* SliderView.h */,
 				C7E797A51C1565450076AE62 /* SliderView.m */,
+				C7B632EC1CC4DEB30091C9D2 /* VideoView.h */,
+				C7B632ED1CC4DEB30091C9D2 /* VideoView.m */,
+				C7B632EF1CC4E9B60091C9D2 /* ADView.h */,
+				C7B632F01CC4E9B60091C9D2 /* ADView.m */,
+				C7B632F51CC5CA160091C9D2 /* CircleView.h */,
+				C7B632F61CC5CA160091C9D2 /* CircleView.m */,
+				C7B632F81CC5D64D0091C9D2 /* VideoPlayer.h */,
+				C7B632F91CC5D64D0091C9D2 /* VideoPlayer.m */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -886,11 +906,13 @@
 				C7C89DFE1CA50CB600B6DF10 /* ExitCell.m in Sources */,
 				C7C89E131CB4A1FD00B6DF10 /* GetCountViewController.m in Sources */,
 				C7EF9C8A1C02BCCD001326D8 /* NameViewController.m in Sources */,
+				C7B632F11CC4E9B60091C9D2 /* ADView.m in Sources */,
 				C70038B01BFB190D0043A247 /* MenuViewController.m in Sources */,
 				C7E917941C4605CA000C8DB8 /* Chaptertableview.m in Sources */,
 				C70038AC1BFB0FDA0043A247 /* ViewController.m in Sources */,
 				C7F1228B1C070C190001F2AF /* Tool.m in Sources */,
 				C7B632A21CC092D90091C9D2 /* AppDelegate+UploadPlayTime.m in Sources */,
+				C7B632F71CC5CA160091C9D2 /* CircleView.m in Sources */,
 				C7C89DF91CA50A0E00B6DF10 /* AnimationView.m in Sources */,
 				C7C89E181CB6282C00B6DF10 /* FirstViewController.m in Sources */,
 				C704DCEE1C4C992500038CA4 /* CollegeListtableview.m in Sources */,
@@ -916,6 +938,7 @@
 				C7FA57BC1C2009B900B12B85 /* CollectionModel.m in Sources */,
 				C7E660841C5382B4009DBA77 /* NSString+ITTAddtion.m in Sources */,
 				C7FA57B81C1FF97900B12B85 /* CollectionCell.m in Sources */,
+				C7B632EE1CC4DEB30091C9D2 /* VideoView.m in Sources */,
 				C776E4731C4F73990005DBF2 /* TestViewController.m in Sources */,
 				C7E7D0811C0BDE37006D896B /* AboutAppViewController.m in Sources */,
 				C7EB98D21C06B0E10081A841 /* DownMenu.m in Sources */,
@@ -923,6 +946,7 @@
 				C7FD71BD1BF97DD200437DB6 /* main.m in Sources */,
 				C7EF9C8E1C02BCCD001326D8 /* SignViewController.m in Sources */,
 				C756CE1C1C7C06AA005CC628 /* TraceChapterViewController.m in Sources */,
+				C7B632FA1CC5D64D0091C9D2 /* VideoPlayer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

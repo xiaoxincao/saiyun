@@ -960,6 +960,7 @@ singleton_implementation(VideoViewController)
         [self playVideo:videoStr];
     }
 }
+
 #pragma mark--设置AVPlayer
 - (void)playVideo:(NSString *)videoStr{
     NSURL *sourceMovieURl = [NSURL URLWithString:videoStr]
@@ -1211,7 +1212,7 @@ singleton_implementation(VideoViewController)
     }
 }
 
-#pragma mark  计算当前视频缓冲进度
+#pragma mark--计算当前视频缓冲进度
 - (NSTimeInterval)availableDuration {
     
     NSArray *loadedTimeRanges = [[self.player currentItem] loadedTimeRanges];
@@ -1386,7 +1387,7 @@ singleton_implementation(VideoViewController)
 }
 
 
-#pragma mark - 创建手势
+#pragma mark - 创建手势-音量和亮度
 - (void)createGesture
 {
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tapAction:)];
@@ -1502,6 +1503,7 @@ singleton_implementation(VideoViewController)
 - (void)volumeAdd:(CGFloat)step{
     [MPMusicPlayerController applicationMusicPlayer].volume += step;
 }
+//创建亮度显示的view
 - (void)createBrightnessView
 {
     _brightnessView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, 100, 100)];
@@ -1515,11 +1517,6 @@ singleton_implementation(VideoViewController)
     [self.videoview addSubview:_brightnessView];
     _brightnessView.alpha = 0;
 }
-- (BOOL)prefersStatusBarHidden
-{
-    return NO; // 返回NO表示要显示，返回YES将hiden
-}
-
 
 - (void)dealloc
 {

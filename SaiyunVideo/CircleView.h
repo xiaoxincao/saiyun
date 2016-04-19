@@ -12,6 +12,5 @@
 
 @property(nonatomic,strong)UIImageView *centerimg;
 
-//@property(nonatomic,strong)
 
 @end
