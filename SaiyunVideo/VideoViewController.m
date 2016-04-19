@@ -26,6 +26,8 @@
 #import "CollectionViewController.h"
 #import "WebViewController.h"
 #import "Singleton.h"
+#import "VideoView.h"
+#import "ADView.h"
 
 
 #define WIDTH 150
@@ -55,7 +57,7 @@ typedef NS_ENUM(NSInteger, GestureType){
 @property(nonatomic, strong) UIView *blackview;
 @property(nonatomic, strong) UIView *squareview;//旋转的方形view
 @property(nonatomic, strong)UIView *adview;
-@property(nonatomic, strong)UIView *clearview;
+//@property(nonatomic, strong)UIView *clearview;
 @property(nonatomic, assign) BOOL hiddecircle;//上下两个view的隐藏
 @property(nonatomic, strong)UILabel *subtitlesLabel;
 @property(nonatomic, strong)UIButton *rightBtn;
@@ -212,7 +214,7 @@ singleton_implementation(VideoViewController)
     [self.player.currentItem cancelPendingSeeks];
     [self.player.currentItem.asset cancelLoading];
     
-     _subtitlesLabel.text = nil;
+     self.videoview.subtitlelabel.text = nil;
     [self.view removeFromSuperview];
     self.view = nil;
 }
@@ -307,7 +309,7 @@ singleton_implementation(VideoViewController)
     
     //打开用户交互
     self.BGimageView.userInteractionEnabled = YES;
-    self.VideoView.userInteractionEnabled = YES;
+    self.videoview.userInteractionEnabled = YES;
     
     //设置导航栏
     [self setVideoNavigation];
@@ -451,58 +453,25 @@ singleton_implementation(VideoViewController)
     CGFloat Height = kVideoHeight;
     self.BGimageView.backgroundColor = [UIColor blackColor];
     self.BGimageView.contentMode = UIViewContentModeScaleAspectFill;
-    self.VideoView = [[UIView alloc]initWithFrame:CGRectMake(X, Y, Width, Height)];
-    self.VideoView.backgroundColor = [UIColor blackColor];
-    
-    _subtitlesLabel = [[UILabel alloc]init];
-    _subtitlesLabel.textColor = [UIColor whiteColor];
-    _subtitlesLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:18.f];
-    _subtitlesLabel.textAlignment = 1;
-    [self.VideoView addSubview:_subtitlesLabel];
-    [_subtitlesLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.edges.equalTo(self.VideoView).with.insets(UIEdgeInsetsMake(kVideoHeight-35, 5, 5, 5));
-    }];
-    _circleview.center = _BGimageView.center;
-    [self.BGimageView addSubview:self.VideoView];
+    self.videoview = [[VideoView alloc]initWithFrame:CGRectMake(X, Y, Width, Height)];
+    [self.BGimageView addSubview:self.videoview];
 }
 
+#pragma mark----初始化video下面的view
 - (void)setadview
 {
     CGFloat X = 0;
     CGFloat Y = kVideoY;
     CGFloat Width = kScreenWidth;
     CGFloat Height = 40;
-    
+    //透明度0.5的黑色view
     self.adview = [[UIView alloc]initWithFrame:CGRectMake(X, (Y+kVideoHeight), Width, Height)];
     self.adview.backgroundColor = [UIColor grayColor];
     self.adview.alpha = 0.5;
-    self.clearview = [[UIView alloc]initWithFrame:CGRectMake(X, (Y+kVideoHeight), Width, Height)];
-    
-    UIImageView *yunimage = [[UIImageView alloc]initWithFrame:CGRectMake(0, 5, 30, 30)];
-    yunimage.image = [UIImage imageNamed:@"yun144@3x"];
-    
-    UILabel *textlabel = [[UILabel alloc]initWithFrame:CGRectMake(30, 0, Width-30-80, Height)];
-    textlabel.text = @"云谷创课，今天你创业了么？";
-    textlabel.font = [UIFont systemFontOfSize:15];
-    textlabel.textColor = [UIColor whiteColor];
-    
-    UIButton *enterbtn = [UIButton buttonWithType:UIButtonTypeSystem];
-    enterbtn.frame = CGRectMake(Width-80, 0, 60, Height);
-    [enterbtn setTitle:@"点击进入" forState:UIControlStateNormal];
-    [enterbtn setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
-    [enterbtn addTarget:self action:@selector(enterbtn) forControlEvents:UIControlEventTouchUpInside];
-    
-    UIButton *exitbtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    exitbtn.frame = CGRectMake(Width-20, 0, 20, 20);
-    [exitbtn setImage:[UIImage imageNamed:@"close"] forState:UIControlStateNormal];
-    [exitbtn addTarget:self action:@selector(hiddeview) forControlEvents:UIControlEventTouchUpInside];
-    
-    
-    
-    [self.clearview addSubview:yunimage];
-    [self.clearview addSubview:textlabel];
-    [self.clearview addSubview:enterbtn];
-    [self.clearview addSubview:exitbtn];
+    //clear色的view后添加,上面放的控件
+    self.clearview = [[ADView alloc]initWithFrame:CGRectMake(X, (Y+kVideoHeight), Width, Height)];
+    [self.clearview enterbtnaddTarget:self action:@selector(enterbtn) forControlEvents:UIControlEventTouchUpInside];
+    [self.clearview exitbtnaddTarget:self action:@selector(hiddeview) forControlEvents:UIControlEventTouchUpInside];
     [_BGimageView addSubview:self.adview];
     [_BGimageView addSubview:self.clearview];
 }
@@ -601,8 +570,8 @@ singleton_implementation(VideoViewController)
         make.edges.equalTo(_circleview).with.insets(UIEdgeInsetsMake(30, 30, 30, 30));
     }];
     
-    _circleview.center = _VideoView.center;
-    _blackview.center = _VideoView.center;
+    _circleview.center = self.videoview.center;
+    _blackview.center = self.videoview.center;
     _BGimageView.userInteractionEnabled = YES;
     _circleview.userInteractionEnabled = YES;//用户交互设置为YES
     
@@ -671,7 +640,7 @@ singleton_implementation(VideoViewController)
 
 #pragma mark---- 添加点击显示圆环的手势
 - (void)Gesture{
-    [self.VideoView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showcircleview:)]];
+    [self.videoview addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showcircleview:)]];
 }
 
 #pragma mark---- 显示圆环
@@ -1013,12 +982,12 @@ singleton_implementation(VideoViewController)
         NSLog(@"222");
         [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
         //切换视频时，将字幕label置为空
-        _subtitlesLabel.text = nil;
+        self.videoview.subtitlelabel.text = nil;
         [self removeOBserverFromPlayer:self.player];
         [self.player replaceCurrentItemWithPlayerItem:self.playerItem];
         self.playerLayer = [AVPlayerLayer playerLayerWithPlayer:_player];
-        self.playerLayer.frame = self.VideoView.bounds;
-        [self.VideoView.layer insertSublayer:_playerLayer atIndex:0];
+        self.playerLayer.frame = self.videoview.bounds;
+        [self.videoview.layer insertSublayer:_playerLayer atIndex:0];
         self.playerLayer.videoGravity =AVLayerVideoGravityResizeAspectFill;
         [self addObserverToPlayer:self.player];
         NSLog(@"333");
@@ -1027,8 +996,8 @@ singleton_implementation(VideoViewController)
         [MBProgressHUD showHUDAddedTo:self.view animated:YES];
         self.player = [AVPlayer playerWithPlayerItem:self.playerItem];
         self.playerLayer = [AVPlayerLayer playerLayerWithPlayer:_player];
-        self.playerLayer.frame = self.VideoView.bounds;
-        [self.VideoView.layer insertSublayer:_playerLayer atIndex:0];
+        self.playerLayer.frame = self.videoview.bounds;
+        [self.videoview.layer insertSublayer:_playerLayer atIndex:0];
         self.playerLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
         [self addObserverToPlayer:self.player];
         
@@ -1354,7 +1323,7 @@ singleton_implementation(VideoViewController)
             NSInteger endarr = [_endtimearray[i]integerValue];
             if (currentSecond > beginarr && currentSecond< endarr) {
                 //同步字幕
-                _subtitlesLabel.text = _subtitlesarray[i];
+                self.videoview.subtitlelabel.text = _subtitlesarray[i];
             }
         }
     }
@@ -1433,7 +1402,7 @@ singleton_implementation(VideoViewController)
 - (void)createGesture
 {
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tapAction:)];
-    [self.VideoView addGestureRecognizer:tap];
+    [self.videoview addGestureRecognizer:tap];
     //获取系统音量
     MPVolumeView *volumeView = [[MPVolumeView alloc] init];
     volumeView.frame = CGRectMake(-1000, -100, 100, 100);
@@ -1475,7 +1444,7 @@ singleton_implementation(VideoViewController)
 {
     //NSLog(@"移动中");
     UITouch *touch = [touches anyObject];
-    CGPoint currentLocation = [touch locationInView:self.VideoView];
+    CGPoint currentLocation = [touch locationInView:self.videoview];
     CGFloat offset_x = currentLocation.x - _originalLocation.x;
     CGFloat offset_y = currentLocation.y - _originalLocation.y;
     //求2点间距离
@@ -1548,14 +1517,14 @@ singleton_implementation(VideoViewController)
 - (void)createBrightnessView
 {
     _brightnessView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, 100, 100)];
-    _brightnessView.center = CGPointMake(self.VideoView.bounds.size.width * 0.5, self.VideoView.bounds.size.height * 0.5);
+    _brightnessView.center = CGPointMake(self.videoview.bounds.size.width * 0.5, self.videoview.bounds.size.height * 0.5);
     _brightnessView.image = [UIImage imageNamed:@"person"];
     _brightnessProgress = [[UIProgressView alloc]initWithFrame:CGRectMake(_brightnessView.frame.size.width/2-40, _brightnessView.frame.size.height-30, 80, 10)];
     _brightnessProgress.progressTintColor = [UIColor whiteColor];
     _brightnessProgress.trackTintColor = [UIColor colorWithRed:0.49f green:0.48f blue:0.49f alpha:1.00f];
     _brightnessProgress.progress = [UIScreen mainScreen].brightness;
     [_brightnessView addSubview:_brightnessProgress];
-    [self.VideoView addSubview:_brightnessView];
+    [self.videoview addSubview:_brightnessView];
     _brightnessView.alpha = 0;
 }
 - (BOOL)prefersStatusBarHidden

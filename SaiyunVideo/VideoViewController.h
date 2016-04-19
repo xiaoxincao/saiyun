@@ -12,7 +12,8 @@
 #import "SliderView.h"
 #import "ValueModel.h"
 #import "Singleton.h"
-
+#import "VideoView.h"
+#import "ADView.h"
 @protocol VideoViewControllerDelegate <NSObject>
 
 @end
@@ -37,6 +38,8 @@
 @property (strong, nonatomic) IBOutlet UILabel *TeacherDetailLabel;//老师简介
 @property (strong, nonatomic) IBOutlet UIButton *upMenuBtn;
 @property (strong, nonatomic) IBOutlet SliderView *progressSliderView;
+@property (strong, nonatomic)VideoView *videoview;
+@property (strong, nonatomic)ADView *clearview;
 @property (strong,nonatomic)NSTimer *timer;
 @property (strong,nonatomic)NSTimer *hiddentimer;
 @property (strong, nonatomic) IBOutlet UIButton *playproperty;//播放按钮属性
@@ -49,7 +52,6 @@
 @property (nonatomic,strong) UIProgressView *brightnessProgress; /**< 亮度条 */
 @property(nonatomic,assign)CGFloat systemVolume;//系统音量
 @property(nonatomic,strong)UISlider *volumeViewSlider;//声音调节
-@property (strong, nonatomic) UIView *VideoView;//视频播放的容器View
 @property (strong, nonatomic) AVPlayer *player;//播放器对象
 @property (strong, nonatomic)AVPlayerLayer *playerLayer;
 @property(nonatomic,strong)AVPlayerItem *playerItem; // 播放属性
