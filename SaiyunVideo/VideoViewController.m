@@ -108,81 +108,6 @@ typedef NS_ENUM(NSInteger, GestureType){
 singleton_implementation(VideoViewController)
 
 
-- (VideoPlayer *)player
-{
-    if (_player == nil) {
-        _player = [[VideoPlayer alloc]init];
-        _player.delegate = self;
-    }
-    return  _player;
-}
-
-
-//传urlstr
-- (void)playVideoWithPath:(NSString *)path
-{
-    dispatch_async(dispatch_get_main_queue(), ^{
-        self.player.path = path;
-    });
-    __weak VideoViewController *weakSelf = self;
-    _player.bufferProgressBlock = ^(float f) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            weakSelf.slider.bufferValue = f;
-        });
-    };
-    _player.progressBlock = ^(float f) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            if (!weakSelf.slider.slide) {
-                weakSelf.slider.value = f;
-            }
-        });
-    };
-
-}
-
-#pragma mark - SSVideoPlayerDelegate
-//监听toplay时 ，准备播放视频
-- (void)videoPlayerDidReadyPlay:(VideoPlayer *)videoPlayer {
-    [self.player play];
-    self.timer = [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(timeAction) userInfo:nil repeats:YES];
-    [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
-}
-
-- (void)videoPlayerDidBeginPlay:(VideoPlayer *)videoPlayer {
-    self.playproperty.selected = NO;
-    [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
-}
-
-- (void)videoPlayerDidEndPlay:(VideoPlayer *)videoPlayer {
-    self.playproperty.selected = YES;
-    [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
-}
-
-- (void)videoPlayerDidSwitchPlay:(VideoPlayer *)videoPlayer {
-
-}
-
-- (void)videoPlayerDidFailedPlay:(VideoPlayer *)videoPlayer {
-
-    [[[UIAlertView alloc]initWithTitle:@"该视频无法播放" message:nil delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil]show];
-    [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
-}
-
-- (void)createprogress
-{
-    self.slider = [[SSVideoPlaySlider alloc]initWithFrame:CGRectMake(60, 397, [UIScreen mainScreen].bounds.size.width-120, 20)];
-    self.slider.thumbImage = [UIImage imageNamed:@"player_slider"];
-    [self.slider addTarget:self action:@selector(playProgressChange:) forControlEvents:UIControlEventValueChanged];
-    [self.BGimageView addSubview:self.slider];
-
-}
-
-- (void)playProgressChange:(SSVideoPlaySlider *)slider {
-    [self.player moveTo:slider.value];
-    if (!self.playproperty.selected) {
-        [self.player play];
-    }
-}
 - (NSArray *)detailArr
 {
     if (nil == self.detailchapterArray) {
@@ -1000,13 +925,91 @@ singleton_implementation(VideoViewController)
         }
         else
         {
-            //[self playVideo:videoStr];
+            [MBProgressHUD showHUDAddedTo:self.view animated:YES];
             [self playVideoWithPath:videoStr];
         }
     }else
     {
-        //[self playVideo:videoStr];
+        [MBProgressHUD showHUDAddedTo:self.view animated:YES];
         [self playVideoWithPath:videoStr];
+    }
+}
+
+
+- (VideoPlayer *)player
+{
+    if (_player == nil) {
+        _player = [[VideoPlayer alloc]init];
+        _player.delegate = self;
+    }
+    return  _player;
+}
+
+
+//传urlstr
+- (void)playVideoWithPath:(NSString *)path
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        self.player.path = path;
+    });
+    __weak VideoViewController *weakSelf = self;
+    _player.bufferProgressBlock = ^(float f) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            weakSelf.slider.bufferValue = f;
+        });
+    };
+    _player.progressBlock = ^(float f) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (!weakSelf.slider.slide) {
+                weakSelf.slider.value = f;
+            }
+        });
+    };
+    
+}
+
+#pragma mark - VideoPlayerDelegate
+//监听toplay时 ，准备播放视频
+- (void)videoPlayerDidReadyPlay:(VideoPlayer *)videoPlayer {
+    [self.player play];
+    self.timer = [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(timeAction) userInfo:nil repeats:YES];
+    [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+    self.playproperty.selected = NO;
+}
+
+- (void)videoPlayerDidBeginPlay:(VideoPlayer *)videoPlayer {
+    self.playproperty.selected = NO;
+    [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+}
+
+- (void)videoPlayerDidEndPlay:(VideoPlayer *)videoPlayer {
+    self.playproperty.selected = YES;
+    [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+}
+
+- (void)videoPlayerDidSwitchPlay:(VideoPlayer *)videoPlayer {
+    
+}
+
+- (void)videoPlayerDidFailedPlay:(VideoPlayer *)videoPlayer {
+    
+    [[[UIAlertView alloc]initWithTitle:@"该视频无法播放" message:nil delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil]show];
+    [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+}
+#pragma mark - 创建进度条
+- (void)createprogress
+{
+    self.slider = [[SSVideoPlaySlider alloc]initWithFrame:CGRectMake(50, 8, [UIScreen mainScreen].bounds.size.width-120, 20)];
+    self.slider.thumbImage = [UIImage imageNamed:@"player_slider"];
+    [self.slider addTarget:self action:@selector(playProgressChange:) forControlEvents:UIControlEventValueChanged];
+    [self.progressSliderView addSubview:self.slider];
+    
+}
+#pragma mark - 进度条的方法
+- (void)playProgressChange:(SSVideoPlaySlider *)slider {
+    [self.player moveTo:slider.value];
+    if (!self.playproperty.selected) {
+        [self.player play];
     }
 }
 
@@ -1104,6 +1107,7 @@ singleton_implementation(VideoViewController)
     
 }
 
+#pragma mark --加载下一课程
 - (void)loadnextvideo
 {
     NSString *nextid = [[NSUserDefaults standardUserDefaults]objectForKey:Nextwareid];
@@ -1205,17 +1209,6 @@ singleton_implementation(VideoViewController)
         [self.player pause];
         self.playproperty.selected = YES;
     }
-    //存放课程的信息当前播放时间需要调整！！！！！！！！！！！！！？？？？？？
-//    NSInteger playtime = CMTimeGetSeconds(self.player.currentTime);
-//    NSInteger totaltime = CMTimeGetSeconds(self.player.currentItem.duration);
-//    NSString *playtimestr = [NSString stringWithFormat:@"%ld",(long)playtime];
-//    NSString *totaltimestr = [NSString stringWithFormat:@"%ld",(long)totaltime];
-//    [[NSUserDefaults standardUserDefaults]setObject:self.courcewareid forKey:CoursewareID];
-//    [[NSUserDefaults standardUserDefaults]setObject:playtimestr forKey:StudyTime];
-//    [[NSUserDefaults standardUserDefaults]setObject:totaltimestr forKey:TotalTime];
-//    [[NSUserDefaults standardUserDefaults]setObject:_valuemodel.courseName forKey:@"CName"];
-//    [[NSUserDefaults standardUserDefaults]synchronize];
-    
 }
 
 #pragma mark-
