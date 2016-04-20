@@ -14,10 +14,7 @@ static NSString *const VideoPlayerItemLoadedTimeRangesKeyPath = @"loadedTimeRang
 
 @interface VideoPlayer ()
 
-@property (nonatomic,strong) AVPlayer *player;
-@property (nonatomic,strong) AVPlayerLayer *playerLayer;
-@property (nonatomic,strong) AVPlayerItem *playerItem;
-@property (nonatomic,strong) id observer;
+
 
 @end
 
@@ -28,19 +25,18 @@ static NSString *const VideoPlayerItemLoadedTimeRangesKeyPath = @"loadedTimeRang
     if (self) {
         _player = [[AVPlayer alloc]init];
         _pausePlayWhenMove = YES;
-
     }
     return self;
 }
-
-
+//讲playerlayer添加到视频播放的容器view上
 - (void)playInContainer:(UIView *)container {
     self.playerLayer = [AVPlayerLayer playerLayerWithPlayer:self.player];
     self.playerLayer.frame = container.bounds;
-    self.playerLayer.videoGravity =AVLayerVideoGravityResizeAspectFill;
+    self.playerLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
     [container.layer addSublayer:self.playerLayer];
 }
 
+//重写path，传入path添加item，监听
 - (void)setPath:(NSString *)path {
     if (path == nil) {
         return;
@@ -87,7 +83,17 @@ static NSString *const VideoPlayerItemLoadedTimeRangesKeyPath = @"loadedTimeRang
             weakSelf.progressBlock(f/max);
         }
     }];
+    [self.player play];
 }
+//移除监听
+- (void)clear {
+    [self.player removeTimeObserver:self.observer];
+    [[NSNotificationCenter defaultCenter]removeObserver:self name:AVPlayerItemDidPlayToEndTimeNotification object:self.playerItem];
+    [self.playerItem removeObserver:self forKeyPath:VideoPlayerItemLoadedTimeRangesKeyPath context:NULL];
+    [self.playerItem removeObserver:self forKeyPath:VideoPlayerItemStatusKeyPath context:NULL];
+    self.playerItem = nil;
+}
+//播放结束时
 - (void)playEndNotification {
     if (self.progressBlock) {
         self.progressBlock(1.0);
@@ -96,6 +102,7 @@ static NSString *const VideoPlayerItemLoadedTimeRangesKeyPath = @"loadedTimeRang
         [self.delegate videoPlayerDidEndPlay:self];
     }
 }
+//播放失败时
 - (void)playFailedNotification {
     if ([self.delegate respondsToSelector:@selector(videoPlayerDidFailedPlay:)]) {
         [self.delegate videoPlayerDidFailedPlay:self];
@@ -105,11 +112,13 @@ static NSString *const VideoPlayerItemLoadedTimeRangesKeyPath = @"loadedTimeRang
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSString *,id> *)change context:(void *)context {
     if ([keyPath isEqualToString:VideoPlayerItemStatusKeyPath]) {
         AVPlayerStatus status = [change[NSKeyValueChangeNewKey]integerValue];
+        //成功时去播放视频
         if (status == AVPlayerStatusReadyToPlay) {
             if ([self.delegate respondsToSelector:@selector(videoPlayerDidReadyPlay:)]) {
                 [self.delegate videoPlayerDidReadyPlay:self];
             }
         }
+        //失败时弹出提示信息
         else if (status == AVPlayerStatusFailed) {
             if ([self.delegate respondsToSelector:@selector(videoPlayerDidFailedPlay:)]) {
                 [self.delegate videoPlayerDidFailedPlay:self];
@@ -130,19 +139,13 @@ static NSString *const VideoPlayerItemLoadedTimeRangesKeyPath = @"loadedTimeRang
     }
 }
 
-- (void)clear {
-    [self.player removeTimeObserver:self.observer];
-    [[NSNotificationCenter defaultCenter]removeObserver:self name:AVPlayerItemDidPlayToEndTimeNotification object:self.playerItem];
-    [self.playerItem removeObserver:self forKeyPath:VideoPlayerItemLoadedTimeRangesKeyPath context:NULL];
-    [self.playerItem removeObserver:self forKeyPath:VideoPlayerItemStatusKeyPath context:NULL];
-    self.playerItem = nil;
-}
 - (SSVideoPlayerPlayState)playState {
     if (ABS(self.player.rate - 1) <= 0.000001) {
         return SSVideoPlayerPlayStatePlaying;
     }
     return SSVideoPlayerPlayStateStop;
 }
+
 - (void)play {
     if (ABS(self.player.rate - 1) <= 0.000001) {
         return;

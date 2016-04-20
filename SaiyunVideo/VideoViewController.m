@@ -29,7 +29,7 @@
 #import "VideoView.h"
 #import "ADView.h"
 #import "CircleView.h"
-
+#import "SSVideoPlaySlider.h"
 
 #define WIDTH 150
 #define CIRCLECOUNT 8
@@ -45,21 +45,20 @@ typedef NS_ENUM(NSInteger, GestureType){
 };
 
 @interface VideoViewController ()<UINavigationControllerDelegate
-,UIAlertViewDelegate>
+,UIAlertViewDelegate,VideoPlayerDelegate>
 {
     AppDelegate * _applegate;
     BOOL _isCollection;       /**< 是否收藏 */
 }
 
-
+@property (nonatomic,strong) SSVideoPlaySlider *slider;
 @property (nonatomic,assign) GestureType gestureType;/**< 手势操作类型 */
 @property(nonatomic, strong) UIButton *selectedLuckyWheelButton;
 @property(nonatomic, strong) CircleView *circleview;
 @property(nonatomic, strong) UIView *blackview;
 @property(nonatomic, strong) UIView *squareview;//旋转的方形view
 @property(nonatomic, strong)UIView *adview;
-//@property(nonatomic, strong)UIView *clearview;
-@property(nonatomic, assign) BOOL hiddecircle;//上下两个view的隐藏
+@property(nonatomic, assign)BOOL hiddecircle;//上下两个view的隐藏
 @property(nonatomic, strong)UILabel *subtitlesLabel;
 @property(nonatomic, strong)UIButton *rightBtn;
 @property(nonatomic, strong)UIImageView *centerimg;
@@ -109,6 +108,81 @@ typedef NS_ENUM(NSInteger, GestureType){
 singleton_implementation(VideoViewController)
 
 
+- (VideoPlayer *)player
+{
+    if (_player == nil) {
+        _player = [[VideoPlayer alloc]init];
+        _player.delegate = self;
+    }
+    return  _player;
+}
+
+
+//传urlstr
+- (void)playVideoWithPath:(NSString *)path
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        self.player.path = path;
+    });
+    __weak VideoViewController *weakSelf = self;
+    _player.bufferProgressBlock = ^(float f) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            weakSelf.slider.bufferValue = f;
+        });
+    };
+    _player.progressBlock = ^(float f) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (!weakSelf.slider.slide) {
+                weakSelf.slider.value = f;
+            }
+        });
+    };
+
+}
+
+#pragma mark - SSVideoPlayerDelegate
+//监听toplay时 ，准备播放视频
+- (void)videoPlayerDidReadyPlay:(VideoPlayer *)videoPlayer {
+    [self.player play];
+    self.timer = [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(timeAction) userInfo:nil repeats:YES];
+    [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+}
+
+- (void)videoPlayerDidBeginPlay:(VideoPlayer *)videoPlayer {
+    self.playproperty.selected = NO;
+    [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+}
+
+- (void)videoPlayerDidEndPlay:(VideoPlayer *)videoPlayer {
+    self.playproperty.selected = YES;
+    [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+}
+
+- (void)videoPlayerDidSwitchPlay:(VideoPlayer *)videoPlayer {
+
+}
+
+- (void)videoPlayerDidFailedPlay:(VideoPlayer *)videoPlayer {
+
+    [[[UIAlertView alloc]initWithTitle:@"该视频无法播放" message:nil delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil]show];
+    [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+}
+
+- (void)createprogress
+{
+    self.slider = [[SSVideoPlaySlider alloc]initWithFrame:CGRectMake(60, 397, [UIScreen mainScreen].bounds.size.width-120, 20)];
+    self.slider.thumbImage = [UIImage imageNamed:@"player_slider"];
+    [self.slider addTarget:self action:@selector(playProgressChange:) forControlEvents:UIControlEventValueChanged];
+    [self.BGimageView addSubview:self.slider];
+
+}
+
+- (void)playProgressChange:(SSVideoPlaySlider *)slider {
+    [self.player moveTo:slider.value];
+    if (!self.playproperty.selected) {
+        [self.player play];
+    }
+}
 - (NSArray *)detailArr
 {
     if (nil == self.detailchapterArray) {
@@ -122,6 +196,9 @@ singleton_implementation(VideoViewController)
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     NSLog(@"viewWillAppear！");
+    [self.player playInContainer:self.videoview];
+    
+    
     self.isOther = NO;
     self.navigationController.navigationBar.hidden = NO;
     self.navigationController.delegate = self;
@@ -171,7 +248,7 @@ singleton_implementation(VideoViewController)
     else{
         NSLog(@"输出2");
          [self.player pause];
-        [self.player replaceCurrentItemWithPlayerItem:nil];
+        //[self.player replaceCurrentItemWithPlayerItem:nil];
         self.player = nil;
         
         if (self.timer) {
@@ -185,8 +262,8 @@ singleton_implementation(VideoViewController)
         
         if (loginsuccess) {
             //界面消失时上传播放信息
-            NSInteger playtime = CMTimeGetSeconds(self.player.currentTime);
-            NSInteger totaltime = CMTimeGetSeconds(self.player.currentItem.duration);
+            NSInteger playtime = CMTimeGetSeconds(self.player.playerItem.currentTime);
+            NSInteger totaltime = CMTimeGetSeconds(self.player.playerItem.duration);
             NSString *playtimestr = [NSString stringWithFormat:@"%ld",(long)playtime];
             NSString *totaltimestr = [NSString stringWithFormat:@"%ld",(long)totaltime];
             //播放时间是秒
@@ -207,13 +284,13 @@ singleton_implementation(VideoViewController)
     }
     [[NSNotificationCenter defaultCenter]removeObserver:self name:NetworkViaWWAN object:nil];
     //界面消失时移除对视频的监听
-    [self removeOBserverFromPlayer:self.player];
+    //[self removeOBserverFromPlayer:self.player];
     NSLog(@"viewWillDisappear");
     self.isOther = YES;
      //[self.player pause];
     //取消，释放未请求完成的视频对象
-    [self.player.currentItem cancelPendingSeeks];
-    [self.player.currentItem.asset cancelLoading];
+//    [self.player.currentItem cancelPendingSeeks];
+//    [self.player.currentItem.asset cancelLoading];
     
      self.videoview.subtitlelabel.text = nil;
     [self.view removeFromSuperview];
@@ -318,14 +395,18 @@ singleton_implementation(VideoViewController)
     [self setVideoViewFrame];
     [self setadview];
     //初始化进度条的UI
-    [self initProgressUI];
+    //[self initProgressUI];
     //点击屏幕显示圆环
     [self Gesture];
     
     [self creatchaptertableview];
     
+    [self createprogress];
     //每次进入此页面都将isnotice字段赋值为no
     self.isnotice = NO;
+    
+    [self.playproperty setBackgroundImage:[UIImage imageNamed:@"pause"] forState:UIControlStateNormal];
+    [self.playproperty setBackgroundImage:[UIImage imageNamed:@"play"] forState:UIControlStateSelected];
 }
 
 #pragma mark -
@@ -728,14 +809,16 @@ singleton_implementation(VideoViewController)
     if (loginsuccess) {
         //first = no如果不是第一次播放的话就上传播放信息
         if (self.first) {
-            NSInteger playtime = CMTimeGetSeconds(self.player.currentTime);
-            NSInteger totaltime = CMTimeGetSeconds(self.player.currentItem.duration);
+            
+            NSInteger playtime = CMTimeGetSeconds(self.player.playerItem.currentTime);
+            NSInteger totaltime = CMTimeGetSeconds(self.player.playerItem.duration);
             NSString *playtimestr = [NSString stringWithFormat:@"%ld",(long)playtime];
             NSString *totaltimestr = [NSString stringWithFormat:@"%ld",(long)totaltime];
             if (![playtimestr isEqualToString:@"0"]&&playtimestr != nil){
             //播放时间是秒
             NSDictionary *dict = @{@"coursewareId":self.valuemodel.id,@"studyTime":playtimestr,@"totalTime":totaltimestr};
             [self poststudyTimeDict:dict Url:String_Save_Video_Exit_Info];
+             
         }
         }
         self.first = YES;
@@ -753,6 +836,7 @@ singleton_implementation(VideoViewController)
             [self loadplayinfo:self.valuemodel.id];
         }
     });
+     
 }
 
 - (void)loadCapter:(NSString *)mycourseid
@@ -824,43 +908,6 @@ singleton_implementation(VideoViewController)
             //初始化一个章节列表tableview
             //[self creatchaptertableview];
             
-            //传courseid参数过去，
-            self.chaptertableview.courseId = self.courceid;
-            //章节的信息数组传过去
-            self.chaptertableview.dataarray = self.AllChapterArray;
-            //刷新章节table
-            [self.chaptertableview reloadData];
-        }
-        else{
-            NSLog(@"加载章节列表失败");
-        }
-    } failureBlock:^(NSString *error) {
-    }];
-}
-
-
-//每次点击显示章节列表，重新加载章节数据
-- (void)loadChapterrrDataWithCompletionHandle:(NSString *)mycourseid{
-    NSString *chapterstr = [NSString stringWithFormat:Video_Chapter_List,mycourseid];
-    [[NetworkSingleton sharedManager]postResultWithParameter:nil url:chapterstr successBlock:^(id responseBody) {
-        self.detailchapterArray = [responseBody objectForKey:@"result"];
-        if (self.detailchapterArray) {
-            //存放value数据的模型数组
-            for (NSDictionary *dict in self.detailchapterArray)
-            {
-                self.valueArray = [NSMutableArray array];
-                self.AllChapterArray = [[NSMutableArray alloc]init];
-                ChaptersModel *chaptermodel = [ChaptersModel mj_objectWithKeyValues:dict];
-                self.valueArray = (NSMutableArray *)chaptermodel.value;
-                NSMutableArray *array = [NSMutableArray array];
-                for (int j = 0; j<self.valueArray.count; j++) {
-                    NSDictionary *dict = self.valueArray[j];
-                    ValueModel *valuemodel = [ValueModel mj_objectWithKeyValues:dict];
-                    [array addObject:valuemodel];
-                }
-                chaptermodel.value = array;
-                [self.AllChapterArray addObject:chaptermodel];
-            }
             //传courseid参数过去，
             self.chaptertableview.courseId = self.courceid;
             //章节的信息数组传过去
@@ -953,118 +1000,13 @@ singleton_implementation(VideoViewController)
         }
         else
         {
-            [self playVideo:videoStr];
+            //[self playVideo:videoStr];
+            [self playVideoWithPath:videoStr];
         }
     }else
     {
-        [self playVideo:videoStr];
-    }
-}
-
-#pragma mark--设置AVPlayer
-- (void)playVideo:(NSString *)videoStr{
-    NSURL *sourceMovieURl = [NSURL URLWithString:videoStr]
-    ;
-    AVAsset *movieAsset = [AVURLAsset URLAssetWithURL:sourceMovieURl options:nil];
-    self.playerItem = [AVPlayerItem playerItemWithAsset:movieAsset];
-    if(self.player){
-        NSLog(@"222");
-        [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
-        //切换视频时，将字幕label置为空
-        self.videoview.subtitlelabel.text = nil;
-        [self removeOBserverFromPlayer:self.player];
-        [self.player replaceCurrentItemWithPlayerItem:self.playerItem];
-        self.playerLayer = [AVPlayerLayer playerLayerWithPlayer:_player];
-        self.playerLayer.frame = self.videoview.bounds;
-        [self.videoview.layer insertSublayer:_playerLayer atIndex:0];
-        self.playerLayer.videoGravity =AVLayerVideoGravityResizeAspectFill;
-        [self addObserverToPlayer:self.player];
-        NSLog(@"333");
-    }
-    else{
-        [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-        self.player = [AVPlayer playerWithPlayerItem:self.playerItem];
-        self.playerLayer = [AVPlayerLayer playerLayerWithPlayer:_player];
-        self.playerLayer.frame = self.videoview.bounds;
-        [self.videoview.layer insertSublayer:_playerLayer atIndex:0];
-        self.playerLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
-        [self addObserverToPlayer:self.player];
-        
-    }
-    [self.player play];
- 
-}
-#pragma mark---添加通知 监控播放状态
-- (void)addObserverToPlayer:(AVPlayer *)player
-{
-    NSLog(@"注册监听");
-    [player addObserver:self forKeyPath:@"currentItem.status" options:NSKeyValueObservingOptionNew context:nil];
-}
-#pragma mark--注销通知
-- (void)removeOBserverFromPlayer:(AVPlayer *)player
-{
-    [player removeObserver:self forKeyPath:@"currentItem.status"];
-}
-
-
-
-#pragma mark -- 监听播放缓冲事件
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
-{
-    NSLog(@"进入监听");
-    //AVPlayerItem *playerItem = object;
-    if ([keyPath isEqualToString:@"currentItem.status"]) {
-        if (![change[@"new"] isKindOfClass:[NSNull class]]) {
-            AVPlayerItemStatus status = [change[@"new"] integerValue];
-            NSLog(@"状态变化----%ld",(long)status);
-            switch (status) {
-                case AVPlayerItemStatusFailed:
-                {
-                    [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
-                    NSLog(@"播放失败");
-                    //self.hud.hidden = YES;
-                    [[Tool SharedInstance]showtoast:@"缓冲视频失败"];
-                    [object removeObserver:self forKeyPath:keyPath];
-                    [self.player replaceCurrentItemWithPlayerItem:nil];
-                    self.playerItem = nil;
-                    self.player = nil;
-                }
-                    break;
-                case AVPlayerItemStatusReadyToPlay:{
-                    [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
-                    //self.hud.hidden = YES;
-                    [self.player play];
-                    [self updateplaybtnUI];
-                    _progressSliderView.maximumValue = CMTimeGetSeconds(_player.currentItem.duration);
-                    //进度条的定时器
-                    self.timer = [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(timeAction) userInfo:nil repeats:YES];
-                    if (self.isOther) {
-                        [self.player pause];
-                    }
-                    
-                    NSLog(@"播放成功");
-                }
-                    break;
-                case AVPlayerItemStatusUnknown:
-                {
-                    [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
-                    //self.hud.hidden = YES;
-                    NSLog(@"未知状态");
-                    [object removeObserver:self forKeyPath:keyPath];
-                    [self.player replaceCurrentItemWithPlayerItem:nil];
-                    self.playerItem = nil;
-                    self.player = nil;
-                }
-                    break;
-                default:
-                    break;
-            }
-        }
-        else{
-            [object removeObserver:self forKeyPath:keyPath];
-            NSLog(@"---change-new为空");
-            return;
-        }
+        //[self playVideo:videoStr];
+        [self playVideoWithPath:videoStr];
     }
 }
 
@@ -1142,7 +1084,7 @@ singleton_implementation(VideoViewController)
     NSLog(@"视频播放完成");
     self.subtitlesLabel.text = nil;
     [[Tool SharedInstance]showtoast:@"正在跳转下一个课程，请耐心等待喔~"];
-    NSInteger playtime = CMTimeGetSeconds(self.player.currentTime);
+    NSInteger playtime = CMTimeGetSeconds(self.player.playerItem.currentTime);
     NSString *playtimestr = [NSString stringWithFormat:@"%ld",(long)playtime];
     NSString *totalstr = [[NSUserDefaults standardUserDefaults]objectForKey:TotalTime];
     if (self.courcewareid != nil) {
@@ -1183,39 +1125,10 @@ singleton_implementation(VideoViewController)
     [self loadplayinfo:nextid];
 }
 
-#pragma mark--进度条样式的设置
-- (void)initProgressUI{
-    [_progressSliderView addTarget:self action:@selector(progressSliderValueChanged:) forControlEvents:UIControlEventValueChanged];
-    _progressSliderView.maximumValue = 0.0;
-    _progressSliderView.value = 0.0;
-    [_progressSliderView setThumbImage:[UIImage imageNamed:@"sliderImage.png"] forState:UIControlStateNormal];
-    [_progressSliderView setThumbImage:[UIImage imageNamed:@"sliderImageTouch.png"] forState:UIControlStateHighlighted];
-}
-
-
-#pragma mark--拖动进度条状态改变
-- (void)progressSliderValueChanged:(UISlider *)sender{
-    // 调用setValue方法 刷新slider左边的label值
-    _progressSliderView.value = sender.value;
-    //判断是否拖动到视频结束。若拖动到视频结束，则播放下一视频
-    if (sender.value == sender.maximumValue) {
-        _progressSliderView.value = sender.value - 1;
-        NSLog(@"进度条的时间----%f",_progressSliderView.value);
-        [self.player seekToTime:CMTimeMakeWithSeconds(_progressSliderView.value, self.player.currentTime.timescale)];
-    } else {
-        [self.player seekToTime:CMTimeMakeWithSeconds(_progressSliderView.value, self.player.currentTime.timescale)];
-        //CMTimeMakeWithSeconds(当前播放时间，每秒多少帧)
-        //CMTimeMake(当前多少帧,每秒多少帧)
-    }
-    if (self.player.rate != 1) {
-        [self.player play];
-    }
-}
-
 #pragma mark--计算当前视频缓冲进度
 - (NSTimeInterval)availableDuration {
     
-    NSArray *loadedTimeRanges = [[self.player currentItem] loadedTimeRanges];
+    NSArray *loadedTimeRanges = [[self.player playerItem] loadedTimeRanges];
     
     CMTimeRange timeRange = [loadedTimeRanges.firstObject CMTimeRangeValue];// 获取缓冲区域
     
@@ -1227,45 +1140,16 @@ singleton_implementation(VideoViewController)
     
     return result;
 }
-
-#pragma mark---- 播放按钮UI的改变
-- (void)updateplaybtnUI
-{
-    NSLog(@"播放速率--%f",self.player.rate);
-    if (self.player.rate == 1) {
-        [_playproperty setImage:[UIImage imageNamed:@"pause"] forState:UIControlStateNormal];
-    } else {
-        NSUserDefaults *userdefault = [NSUserDefaults standardUserDefaults];
-        BOOL loginsuccess = [userdefault boolForKey:LogSuccess];
-        if (loginsuccess) {
-            NSInteger playtime = CMTimeGetSeconds(self.player.currentTime);
-            NSString *playtimestr = [NSString stringWithFormat:@"%ld",(long)playtime];
-            
-            NSString *totalstr = [[NSUserDefaults standardUserDefaults]objectForKey:TotalTime];
-            if (![playtimestr isEqualToString:@"0"]&&playtimestr != nil) {
-            //NSLog(@"study---%@--total---%@---%@",playtimestr,totalstr,self.valuemodel.id);
-                if (self.courcewareid != nil) {
-                    NSDictionary *dict = @{@"coursewareId":self.courcewareid,@"studyTime":playtimestr,@"totalTime":totalstr};
-                    
-                    [self poststudyTimeDict:dict Url:String_Save_Video_Exit_Info];
-                    
-                }else
-                {
-                    NSDictionary *dict = @{@"coursewareId":self.valuemodel.id,@"studyTime":playtimestr,@"totalTime":totalstr};
-                    
-                    [self poststudyTimeDict:dict Url:String_Save_Video_Exit_Info];
-                    
-                }
-            //NSLog(@"--字典--%@",dict);
-                        }
-        }
-        [_playproperty setImage:[UIImage imageNamed:@"play"] forState:UIControlStateNormal];
-    }
-}
+ 
 #pragma mark---- 进度条的改变,同步字幕 保存当前播放信息
 //进度条的定时器执行的方法
 - (void)timeAction
 {
+    if (self.playproperty.selected)
+    {
+        return;
+    }
+    
     //判断4g网络下，且开关没打开的时候，暂停视频播放，如果开关打开了，就不用管了
     BOOL is4g = [[NSUserDefaults standardUserDefaults]boolForKey:Flow];
     if (is4g) {
@@ -1286,15 +1170,13 @@ singleton_implementation(VideoViewController)
         
     }
 
-    
-    //判断播放状态
-    if (_player.rate != 1) {
-        return;
-    }
-    NSInteger currentSecond = CMTimeGetSeconds(_player.currentItem.currentTime);
+    NSInteger currentSecond = CMTimeGetSeconds(_player.playerItem.currentTime);
+    NSInteger duration  = CMTimeGetSeconds(self.player.playerItem.duration);
+    self.progressSliderView.minLabel.text = [NSString stringWithFormat:@"%02d:%02d:%02d",((int)currentSecond) / 3600,((int)currentSecond) / 60, ((int)currentSecond) % 60 ];
+    self.progressSliderView.maxLabel.text = [NSString stringWithFormat:@"%02d:%02d:%02d",((int)duration) / 3600,((int)duration) / 60, ((int)duration) % 60 ];
     BOOL notreachable = [[NSUserDefaults standardUserDefaults]boolForKey:@"noreachable"];
     if ((long)[self availableDuration] <= (long)currentSecond) {
-        if (notreachable) {
+        if (notreachable){
         }
         else
         {
@@ -1303,8 +1185,6 @@ singleton_implementation(VideoViewController)
     }else{
 
     }
-    //将当前播放时间赋值给进度条的值
-    _progressSliderView.value = currentSecond;
     //判断当前时间在字幕开始时间和结束时间之间，则赋值给字幕label以字幕
     if (_subtitlesarray.count != 0) {
         for (int i = 0; i<_begintimearray.count ; i++) {
@@ -1317,24 +1197,24 @@ singleton_implementation(VideoViewController)
         }
     }
     
-    if (currentSecond == (int)CMTimeGetSeconds(self.player.currentItem.duration)) {
+    if (currentSecond == (int)CMTimeGetSeconds(self.player.playerItem.duration)) {
         //当当前时间和总时间相等时，且总时间不为0时，就是播放结束时，执行播放结束的方法
-        if ((int)CMTimeGetSeconds(self.player.currentItem.duration) != 0) {
+        if ((int)CMTimeGetSeconds(self.player.playerItem.duration) != 0) {
             [self playbackFinished];
         }
         [self.player pause];
-        [self updateplaybtnUI];
+        self.playproperty.selected = YES;
     }
     //存放课程的信息当前播放时间需要调整！！！！！！！！！！！！！？？？？？？
-    NSInteger playtime = CMTimeGetSeconds(self.player.currentTime);
-    NSInteger totaltime = CMTimeGetSeconds(self.player.currentItem.duration);
-    NSString *playtimestr = [NSString stringWithFormat:@"%ld",(long)playtime];
-    NSString *totaltimestr = [NSString stringWithFormat:@"%ld",(long)totaltime];
-    [[NSUserDefaults standardUserDefaults]setObject:self.courcewareid forKey:CoursewareID];
-    [[NSUserDefaults standardUserDefaults]setObject:playtimestr forKey:StudyTime];
-    [[NSUserDefaults standardUserDefaults]setObject:totaltimestr forKey:TotalTime];
-    [[NSUserDefaults standardUserDefaults]setObject:_valuemodel.courseName forKey:@"CName"];
-    [[NSUserDefaults standardUserDefaults]synchronize];
+//    NSInteger playtime = CMTimeGetSeconds(self.player.currentTime);
+//    NSInteger totaltime = CMTimeGetSeconds(self.player.currentItem.duration);
+//    NSString *playtimestr = [NSString stringWithFormat:@"%ld",(long)playtime];
+//    NSString *totaltimestr = [NSString stringWithFormat:@"%ld",(long)totaltime];
+//    [[NSUserDefaults standardUserDefaults]setObject:self.courcewareid forKey:CoursewareID];
+//    [[NSUserDefaults standardUserDefaults]setObject:playtimestr forKey:StudyTime];
+//    [[NSUserDefaults standardUserDefaults]setObject:totaltimestr forKey:TotalTime];
+//    [[NSUserDefaults standardUserDefaults]setObject:_valuemodel.courseName forKey:@"CName"];
+//    [[NSUserDefaults standardUserDefaults]synchronize];
     
 }
 
@@ -1359,20 +1239,14 @@ singleton_implementation(VideoViewController)
 }
 
 #pragma mark--播放
-- (IBAction)playBtn:(id)sender {
-    //float dur =  CMTimeGetSeconds(self.player.currentTime);
-    //NSLog(@" 当前时间 %f",dur);
-    if (self.player.rate == 1) {// 正在播放,暂停
+- (IBAction)playBtn:(UIButton *)sender {
+    sender.selected = !sender.selected;
+    if (sender.selected) {
         [self.player pause];
-    } else {// 判断缓冲完成?
-        if (self.player.currentItem.status == AVPlayerItemStatusReadyToPlay) {
-            if ((int)CMTimeGetSeconds(self.player.currentTime) == (int)CMTimeGetSeconds(self.player.currentItem.duration)) {//播放完毕
-                [self.player seekToTime:CMTimeMake(0, self.player.currentItem.currentTime.timescale)];
-            }
-            [self.player play];
-        }
     }
-    [self updateplaybtnUI];
+    else {
+        [self.player play];
+    }
 }
 
 #pragma mark--下一个
@@ -1523,7 +1397,7 @@ singleton_implementation(VideoViewController)
     NSLog(@"dealloc-----------------");
     [[NSNotificationCenter defaultCenter]removeObserver:self];
     //界面消失时移除对视频的监听
-    [self removeOBserverFromPlayer:self.player];
+    //[self removeOBserverFromPlayer:self.player];
 }
 
 - (void)didReceiveMemoryWarning {

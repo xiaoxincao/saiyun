@@ -25,6 +25,7 @@
 		C7B632F11CC4E9B60091C9D2 /* ADView.m in Sources */ = {isa = PBXBuildFile; fileRef = C7B632F01CC4E9B60091C9D2 /* ADView.m */; };
 		C7B632F71CC5CA160091C9D2 /* CircleView.m in Sources */ = {isa = PBXBuildFile; fileRef = C7B632F61CC5CA160091C9D2 /* CircleView.m */; };
 		C7B632FA1CC5D64D0091C9D2 /* VideoPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = C7B632F91CC5D64D0091C9D2 /* VideoPlayer.m */; };
+		C7B632FD1CC60A990091C9D2 /* SSVideoPlaySlider.m in Sources */ = {isa = PBXBuildFile; fileRef = C7B632FC1CC60A990091C9D2 /* SSVideoPlaySlider.m */; };
 		C7C89DF91CA50A0E00B6DF10 /* AnimationView.m in Sources */ = {isa = PBXBuildFile; fileRef = C7C89DF81CA50A0E00B6DF10 /* AnimationView.m */; };
 		C7C89DFD1CA50CB600B6DF10 /* ExitCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C7C89DFA1CA50CB600B6DF10 /* ExitCell.xib */; };
 		C7C89DFE1CA50CB600B6DF10 /* ExitCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C7C89DFB1CA50CB600B6DF10 /* ExitCell.m */; };
@@ -137,6 +138,8 @@
 		C7B632F61CC5CA160091C9D2 /* CircleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CircleView.m; sourceTree = "<group>"; };
 		C7B632F81CC5D64D0091C9D2 /* VideoPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoPlayer.h; sourceTree = "<group>"; };
 		C7B632F91CC5D64D0091C9D2 /* VideoPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoPlayer.m; sourceTree = "<group>"; };
+		C7B632FB1CC60A990091C9D2 /* SSVideoPlaySlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SSVideoPlaySlider.h; path = "../../../Desktop/SSVideoPlayer-master/Demo/Demo/Class/SSVideoPlaySlider.h"; sourceTree = "<group>"; };
+		C7B632FC1CC60A990091C9D2 /* SSVideoPlaySlider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SSVideoPlaySlider.m; path = "../../../Desktop/SSVideoPlayer-master/Demo/Demo/Class/SSVideoPlaySlider.m"; sourceTree = "<group>"; };
 		C7C89DF71CA50A0E00B6DF10 /* AnimationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnimationView.h; sourceTree = "<group>"; };
 		C7C89DF81CA50A0E00B6DF10 /* AnimationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnimationView.m; sourceTree = "<group>"; };
 		C7C89DFA1CA50CB600B6DF10 /* ExitCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ExitCell.xib; sourceTree = "<group>"; };
@@ -442,6 +445,8 @@
 		C7E797A31C1565250076AE62 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				C7B632FB1CC60A990091C9D2 /* SSVideoPlaySlider.h */,
+				C7B632FC1CC60A990091C9D2 /* SSVideoPlaySlider.m */,
 				C7E797A41C1565450076AE62 /* SliderView.h */,
 				C7E797A51C1565450076AE62 /* SliderView.m */,
 				C7B632EC1CC4DEB30091C9D2 /* VideoView.h */,
@@ -912,6 +917,7 @@
 				C70038AC1BFB0FDA0043A247 /* ViewController.m in Sources */,
 				C7F1228B1C070C190001F2AF /* Tool.m in Sources */,
 				C7B632A21CC092D90091C9D2 /* AppDelegate+UploadPlayTime.m in Sources */,
+				C7B632FD1CC60A990091C9D2 /* SSVideoPlaySlider.m in Sources */,
 				C7B632F71CC5CA160091C9D2 /* CircleView.m in Sources */,
 				C7C89DF91CA50A0E00B6DF10 /* AnimationView.m in Sources */,
 				C7C89E181CB6282C00B6DF10 /* FirstViewController.m in Sources */,

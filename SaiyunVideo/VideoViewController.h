@@ -53,10 +53,10 @@
 @property (nonatomic,strong) UIProgressView *brightnessProgress; /**< 亮度条 */
 @property(nonatomic,assign)CGFloat systemVolume;//系统音量
 @property(nonatomic,strong)UISlider *volumeViewSlider;//声音调节
-//@property (nonatomic,strong) VideoPlayer *player;
-@property (strong, nonatomic) AVPlayer *player;//播放器对象
-@property (strong, nonatomic)AVPlayerLayer *playerLayer;
-@property(nonatomic,strong)AVPlayerItem *playerItem; // 播放属性
+@property (nonatomic,strong) VideoPlayer *player;
+//@property (strong, nonatomic) AVPlayer *player;//播放器对象
+//@property (strong, nonatomic)AVPlayerLayer *playerLayer;
+//@property(nonatomic,strong)AVPlayerItem *playerItem; // 播放属性
 
 singleton_interface(VideoViewController)
 

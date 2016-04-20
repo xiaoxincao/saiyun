@@ -33,25 +33,26 @@ typedef NS_ENUM(NSInteger,SSVideoPlayerPlayState) {
     SSVideoPlayerPlayStateStop,
 };
 
-typedef NS_ENUM(NSInteger,SSVideoPlayerDisplayMode) {
-    SSVideoPlayerDisplayModeAspectFit,
-    SSVideoPlayerDisplayModeAspectFill
-};
-
 
 @interface VideoPlayer : NSObject
 
+@property (nonatomic,strong) AVPlayer *player;
+
+@property (nonatomic,strong) AVPlayerLayer *playerLayer;
+
+@property (nonatomic,strong) AVPlayerItem *playerItem;
+
+@property (nonatomic,strong) id observer;
+
 @property (nonatomic,  weak) id <VideoPlayerDelegate> delegate;
+
+@property (nonatomic,assign,readonly) SSVideoPlayerPlayState playState;
+
+@property (nonatomic,assign) BOOL pausePlayWhenMove; //Default YES.
 
 @property (nonatomic,  copy) void (^progressBlock)(float progress);
 
 @property (nonatomic,  copy) void (^bufferProgressBlock)(float progress);
-
-@property (nonatomic,assign,readonly) SSVideoPlayerPlayState playState;
-
-@property (nonatomic,assign) SSVideoPlayerDisplayMode displayMode;
-
-@property (nonatomic,assign) BOOL pausePlayWhenMove; //Default YES.
 
 @property (nonatomic,assign,readonly) float duration;
 
