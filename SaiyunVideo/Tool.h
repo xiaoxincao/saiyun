@@ -8,25 +8,6 @@
 
 #import <Foundation/Foundation.h>
 
-//定义显示HUD的每个动作，当此东西不需要显示是值设为小于0
-typedef enum
-{
-    HUDShowType_None = 0,
-    HUDShowType_RegExistPhone ,
-    HUDShowType_RegOrGetPassGetCode,
-    HUDShowType_RegOrGetPassAction,
-    HUDShowType_GetPassExitPhone,
-    HUDShowType_LoginAction,
-    HUDShowType_LogoutAction,
-    HUDShowType_ChangePassAction,
-    HUDShowType_GetEvaOptionAction,
-    HUDShowType_EvaAction,
-    HUDShowType_PickLocationAction,
-    HUDShowType_SaveAddress,
-    HUDShowType_DefaultAddress,
-    HUDShowType_DeleteAddress
-    
-}HUDShowType;
 
 @interface Tool : NSObject<UIAlertViewDelegate>
 
@@ -40,7 +21,7 @@ typedef enum
 // progress
 - (void)hideprogress;
 - (void)showprogress;
-- (void)showHUD:(HUDShowType)type;
+
 
 /**
  *  检测网络连接,当没有网络连接时,将在view上显示 提示重新加载的界面

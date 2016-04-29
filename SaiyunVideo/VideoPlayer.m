@@ -84,6 +84,12 @@ static NSString *const VideoPlayerItemLoadedTimeRangesKeyPath = @"loadedTimeRang
         }
     }];
     [self.player play];
+//    CMTime dragedCMTime = CMTimeMake(7, 1);
+//    [self.player seekToTime:dragedCMTime completionHandler:^(BOOL finish){
+//        [_player play];
+//    }];
+   
+
 }
 //移除监听
 - (void)clear {

@@ -37,7 +37,7 @@
 #define BrightnessStep 0.06f
 #define kVideoHeight kScreenHeight/3
 #define kVideoY kScreenHeight/4
-#define kCircleWH kScreenWidth
+#define kCircleWH MIN(kScreenHeight, kScreenWidth)
 typedef NS_ENUM(NSInteger, GestureType){
     GestureTypeOfNone = 0,
     GestureTypeOfVolume,
@@ -99,7 +99,7 @@ typedef NS_ENUM(NSInteger, GestureType){
 @property (nonatomic,assign)int isplaying;
 @property (nonatomic,assign)BOOL isOther;
 @property (nonatomic,assign)BOOL nextclass;
-
+@property (nonatomic,assign)BOOL isFull;
 
 @end
 
@@ -148,6 +148,16 @@ singleton_implementation(VideoViewController)
     }];
 }
 
+- (void)viewDidAppear:(BOOL)animated{
+    [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(handleDeviceOrientationDidChange:)
+                                                 name:UIApplicationDidChangeStatusBarFrameNotification
+                                               object:nil
+     ];
+    
+}
 
 - (void)viewWillDisappear:(BOOL)animated
 {
@@ -222,6 +232,64 @@ singleton_implementation(VideoViewController)
     self.view = nil;
 }
 
+- (void)handleDeviceOrientationDidChange:(NSNotification *)notification
+{
+    //1.获取 当前设备 实例
+    UIDevice *device = [UIDevice currentDevice] ;
+    
+    switch (device.orientation) {
+        case UIDeviceOrientationPortrait:
+            NSLog(@"屏幕直立");
+            [self verticalFrame];
+            self.isFull = NO;
+            break;
+        case UIDeviceOrientationLandscapeLeft:
+            NSLog(@"屏幕向左横置");
+            [self horizontalFrame];
+            self.isFull = YES;
+            break;
+        case UIDeviceOrientationLandscapeRight:
+            NSLog(@"屏幕向右橫置");
+            [self horizontalFrame];
+            self.isFull = YES;
+            break;
+        default:
+            break;
+    }
+
+}
+
+#pragma mark----水平尺寸
+- (void)horizontalFrame{
+    CGFloat max = MAX(kScreenHeight, kScreenWidth);
+    CGFloat min = MIN(kScreenHeight, kScreenWidth);
+    self.videoview.frame = CGRectMake(0, 0, max, min);
+    self.player.playerLayer.frame = CGRectMake(0, 0, max, min);
+    self.BGimageView.frame = CGRectMake(0, 0, max, min);
+    self.circleview.center =  self.videoview.center;
+    self.BGimageView.center = self.videoview.center;
+    self.blackview.center = self.videoview.center;
+    self.navigationController.navigationBar.hidden = YES;
+    self.CircleClassifyLabel.hidden = YES;
+    self.ChapterNameLabel.hidden = YES;
+    self.TeacherDetailLabel.hidden = YES;
+    
+}
+
+#pragma mark----垂直尺寸
+- (void)verticalFrame{
+    self.videoview.frame = CGRectMake(0, kVideoY, kScreenWidth, kVideoHeight);
+    self.player.playerLayer.frame = CGRectMake(0, 0, kScreenWidth, kVideoHeight);
+    self.BGimageView.frame = CGRectMake(0, 0, kScreenWidth, kScreenHeight);
+    self.circleview.center =  self.videoview.center;
+    self.navigationController.navigationBar.hidden = NO;
+    self.CircleClassifyLabel.hidden = NO;
+    self.ChapterNameLabel.hidden = NO;
+    self.TeacherDetailLabel.hidden = NO;
+    self.progressSliderView.hidden = NO;
+    self.fourplaybtn.hidden = NO;
+    
+}
 
 #pragma mark-
 #pragma mark------------------三个通知-------------------------
@@ -229,7 +297,6 @@ singleton_implementation(VideoViewController)
 - (void)updatecollectiondata:(NSNotification *)dict
 {
     NSDictionary *mdict = [dict userInfo];
-    //NSLog(@"收藏传过来的--%@",mdict);
     _vamodel = [ValueModel mj_objectWithKeyValues:mdict];
     self.courceid = _vamodel.courseId;
 }
@@ -260,7 +327,8 @@ singleton_implementation(VideoViewController)
     NSString *appendstr2 = [appendstr stringByAppendingString:@".m3u8"];
     NSString *vt = [Subtitle_Path stringByAppendingString:_vamodel.videoName];
     NSString *vtt = [vt stringByAppendingString:@".vtt"];
-    [self setVideo:appendstr2];
+    
+    [self setVideo:appendstr2 andLastStudyTime:_vamodel.lastStudyTime];
     [self setSubstitle:vtt];
     //储存当前播放信息
     [[NSUserDefaults standardUserDefaults]setObject:appendstr2 forKey:Videourl];
@@ -319,8 +387,6 @@ singleton_implementation(VideoViewController)
     //初始化VideoView
     [self setVideoViewFrame];
     [self setadview];
-    //初始化进度条的UI
-    //[self initProgressUI];
     //点击屏幕显示圆环
     [self Gesture];
     
@@ -454,14 +520,20 @@ singleton_implementation(VideoViewController)
 #pragma mark---- 初始化videoframe
 - (void)setVideoViewFrame{
     
-    CGFloat X = 0;
-    CGFloat Y = kVideoY;
-    CGFloat Width = kScreenWidth;
-    CGFloat Height = kVideoHeight;
-    self.BGimageView.backgroundColor = [UIColor blackColor];
-    self.BGimageView.contentMode = UIViewContentModeScaleAspectFill;
-    self.videoview = [[VideoView alloc]initWithFrame:CGRectMake(X, Y, Width, Height)];
-    [self.BGimageView addSubview:self.videoview];
+    if (!self.isFull) {
+        CGFloat X = 0;
+        CGFloat Y = kVideoY;
+        CGFloat Width = kScreenWidth;
+        CGFloat Height = kVideoHeight;
+        self.BGimageView.backgroundColor = [UIColor blackColor];
+        self.BGimageView.contentMode = UIViewContentModeScaleAspectFill;
+        self.videoview = [[VideoView alloc]initWithFrame:CGRectMake(X, Y, Width, Height)];
+        [self.BGimageView addSubview:self.videoview];
+
+    }else
+    {
+        [self horizontalFrame];
+    }
 }
 
 #pragma mark----初始化video下面的view
@@ -511,6 +583,21 @@ singleton_implementation(VideoViewController)
     self.clearview.hidden = YES;
 }
 
+#pragma mark - 创建进度条
+- (void)createprogress
+{
+    self.slider = [[SSVideoPlaySlider alloc]init];
+    self.slider.thumbImage = [UIImage imageNamed:@"player_slider"];
+    [self.slider addTarget:self action:@selector(playProgressChange:) forControlEvents:UIControlEventValueChanged];
+    [self.progressSliderView addSubview:self.slider];
+    [self.slider mas_makeConstraints:^(MASConstraintMaker *make) {
+        //上，左，下，右
+        make.right.offset(-60);
+        make.left.offset(60);
+        make.top.offset(10);
+        make.height.offset(30);
+    }];
+}
 #pragma mark -
 #pragma mark -运营商网下发出的通知方法
 - (void)Alert{
@@ -553,6 +640,9 @@ singleton_implementation(VideoViewController)
 #pragma mark ---- 圆环控件的创建
 - (void)drawMyLayer
 {
+//    CGFloat max = MAX(kScreenHeight, kScreenWidth);
+//    CGFloat min = MIN(kScreenHeight, kScreenWidth);
+    
     //黑色阴影view
     _blackview = [[UIView alloc]initWithFrame:CGRectMake(0, kVideoY-50,kCircleWH , kCircleWH)];
     _blackview.backgroundColor = [UIColor blackColor];
@@ -564,8 +654,9 @@ singleton_implementation(VideoViewController)
     _circleview.backgroundColor = [UIColor clearColor];
     _circleview.layer.cornerRadius = kCircleWH/2;
     
-    _circleview.center = self.videoview.center;
     _blackview.center = self.videoview.center;
+    _circleview.center = self.videoview.center;
+    
     _BGimageView.userInteractionEnabled = YES;
     _circleview.userInteractionEnabled = YES;//用户交互设置为YES
     
@@ -642,6 +733,12 @@ singleton_implementation(VideoViewController)
 
     self.circleview.hidden = NO;
     self.blackview.hidden = NO;
+    if (self.isFull) {
+        self.progressSliderView.hidden = !self.progressSliderView.hidden;
+        self.fourplaybtn.hidden = !self.fourplaybtn.hidden;
+        
+    }
+    
     
     [self performSelector:@selector(HiddenCircle:) withObject:nil afterDelay:3];
 }
@@ -856,7 +953,6 @@ singleton_implementation(VideoViewController)
 {
     [[NetworkSingleton sharedManager]postResultWithParameter:nil url:appendstr successBlock:^(id responseBody) {
         NSDictionary *dict = responseBody[@"result"];
-        //NSLog(@"有没有——--%@",dict);
         ValueModel *valuemodel = [ValueModel mj_objectWithKeyValues:dict];
         
         if (valuemodel.fullFilePath) {
@@ -866,7 +962,7 @@ singleton_implementation(VideoViewController)
             NSString *vt = [Subtitle_Path stringByAppendingString:valuemodel.videoName];
             NSString *vtt = [vt stringByAppendingString:@".vtt"];
             NSLog(@"2222222222视频url----%@",appendstr2);
-            [self setVideo:appendstr2];
+            [self setVideo:appendstr2 andLastStudyTime:valuemodel.lastStudyTime];
             [self setSubstitle:vtt];
             
             
@@ -914,7 +1010,7 @@ singleton_implementation(VideoViewController)
 #pragma mark-
 #pragma mark---------------以下全是播放器的代码
 #pragma mark--传url播放视频之前判断网络状况
-- (void)setVideo:(NSString *)videoStr{
+- (void)setVideo:(NSString *)videoStr andLastStudyTime:(NSInteger)laststudytime{
     BOOL is4g = [[NSUserDefaults standardUserDefaults]boolForKey:Flow];
     if (is4g) {
         self.on = [[NSUserDefaults standardUserDefaults]boolForKey:ON];
@@ -926,12 +1022,12 @@ singleton_implementation(VideoViewController)
         else
         {
             [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-            [self playVideoWithPath:videoStr];
+            [self playVideoWithPath:videoStr andLastStudyTime:laststudytime];
         }
     }else
     {
         [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-        [self playVideoWithPath:videoStr];
+        [self playVideoWithPath:videoStr andLastStudyTime:laststudytime];
     }
 }
 
@@ -946,8 +1042,8 @@ singleton_implementation(VideoViewController)
 }
 
 
-//传urlstr
-- (void)playVideoWithPath:(NSString *)path
+//传urlstr和上次学习时间
+- (void)playVideoWithPath:(NSString *)path andLastStudyTime:(NSInteger)laststudytime
 {
     dispatch_async(dispatch_get_main_queue(), ^{
         self.player.path = path;
@@ -971,6 +1067,12 @@ singleton_implementation(VideoViewController)
 #pragma mark - VideoPlayerDelegate
 //监听toplay时 ，准备播放视频
 - (void)videoPlayerDidReadyPlay:(VideoPlayer *)videoPlayer {
+//    __weak typeof(self) weakSelf = self;
+//     CMTime dragedCMTime = CMTimeMake(7, 1);
+//    [weakSelf.player.player seekToTime:dragedCMTime completionHandler:^(BOOL finish){
+//        [weakSelf.player.player play];
+//    }];
+    NSLog(@"准备播放视频");
     [self.player play];
     self.timer = [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(timeAction) userInfo:nil repeats:YES];
     [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
@@ -996,15 +1098,7 @@ singleton_implementation(VideoViewController)
     [[[UIAlertView alloc]initWithTitle:@"该视频无法播放" message:nil delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil]show];
     [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
 }
-#pragma mark - 创建进度条
-- (void)createprogress
-{
-    self.slider = [[SSVideoPlaySlider alloc]initWithFrame:CGRectMake(50, 8, [UIScreen mainScreen].bounds.size.width-120, 20)];
-    self.slider.thumbImage = [UIImage imageNamed:@"player_slider"];
-    [self.slider addTarget:self action:@selector(playProgressChange:) forControlEvents:UIControlEventValueChanged];
-    [self.progressSliderView addSubview:self.slider];
-    
-}
+
 #pragma mark - 进度条的方法
 - (void)playProgressChange:(SSVideoPlaySlider *)slider {
     [self.player moveTo:slider.value];
@@ -1161,8 +1255,7 @@ singleton_implementation(VideoViewController)
         //4g网络下,开关没打开
         if (!self.on) {
             [self.player pause];
-            //[self updateUI];
-            [_playproperty setImage:[UIImage imageNamed:@"play"] forState:UIControlStateNormal];
+            _playproperty.selected = YES;
         }
         //4g网络下，开关打开时，继续播放，什么处理都不做？
         else
@@ -1209,6 +1302,18 @@ singleton_implementation(VideoViewController)
         [self.player pause];
         self.playproperty.selected = YES;
     }
+    
+    //存放课程的信息当前播放时间需要调整！！！！！！！！！！！！！？？？？？？
+    NSInteger playtime = CMTimeGetSeconds(self.player.playerItem.currentTime);
+    NSInteger totaltime = CMTimeGetSeconds(self.player.playerItem.duration);
+    NSString *playtimestr = [NSString stringWithFormat:@"%ld",(long)playtime];
+    NSString *totaltimestr = [NSString stringWithFormat:@"%ld",(long)totaltime];
+    [[NSUserDefaults standardUserDefaults]setObject:self.courcewareid forKey:CoursewareID];
+    [[NSUserDefaults standardUserDefaults]setObject:playtimestr forKey:StudyTime];
+    [[NSUserDefaults standardUserDefaults]setObject:totaltimestr forKey:TotalTime];
+    [[NSUserDefaults standardUserDefaults]setObject:_valuemodel.courseName forKey:@"CName"];
+    [[NSUserDefaults standardUserDefaults]synchronize];
+
 }
 
 #pragma mark-
@@ -1389,8 +1494,7 @@ singleton_implementation(VideoViewController)
 {
     NSLog(@"dealloc-----------------");
     [[NSNotificationCenter defaultCenter]removeObserver:self];
-    //界面消失时移除对视频的监听
-    //[self removeOBserverFromPlayer:self.player];
+
 }
 
 - (void)didReceiveMemoryWarning {

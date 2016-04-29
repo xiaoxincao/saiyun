@@ -14,7 +14,7 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = '3D7B6F7DB727FC98E7FC7B3C'
+               BlueprintIdentifier = '8696CDC3114B57B5BC7F984D'
                BlueprintName = 'PPRevealSideViewController'
                ReferencedContainer = 'container:Pods.xcodeproj'
                BuildableName = 'libPPRevealSideViewController.a'>

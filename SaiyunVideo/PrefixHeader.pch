@@ -26,6 +26,7 @@
 #import "SDImageCache.h"
 #import "Masonry.h"
 #import "UIImageView+WebCache.h"
+#import <ShareSDK.h>
 
 //控制器
 #import "SettingTableViewController.h"

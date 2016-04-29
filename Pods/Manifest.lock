@@ -43,6 +43,7 @@ PODS:
   - SDWebImage (3.7.3):
     - SDWebImage/Core (= 3.7.3)
   - SDWebImage/Core (3.7.3)
+  - shareSDK (0.0.2)
 
 DEPENDENCIES:
   - AFNetworking (~> 2.6.0)
@@ -54,6 +55,7 @@ DEPENDENCIES:
   - PPRevealSideViewController (~> 1.2.2)
   - Reachability (~> 3.2)
   - SDWebImage (~> 3.7.3)
+  - shareSDK (~> 0.0.2)
 
 SPEC CHECKSUMS:
   AFNetworking: cb8d14a848e831097108418f5d49217339d4eb60
@@ -66,5 +68,6 @@ SPEC CHECKSUMS:
   PPRevealSideViewController: be6d88511fcf55ddcfb9e9ad6167644a421e709a
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
   SDWebImage: 1d2b1a1efda1ade1b00b6f8498865f8ddedc8a84
+  shareSDK: a09e5dc23836e9743a2a10f7949aa6bd9941b161
 
 COCOAPODS: 0.39.0

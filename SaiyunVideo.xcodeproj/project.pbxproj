@@ -17,6 +17,9 @@
 		C756CE1C1C7C06AA005CC628 /* TraceChapterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C756CE1B1C7C06AA005CC628 /* TraceChapterViewController.m */; };
 		C776E4731C4F73990005DBF2 /* TestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C776E4711C4F73990005DBF2 /* TestViewController.m */; };
 		C776E4741C4F73990005DBF2 /* TestViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C776E4721C4F73990005DBF2 /* TestViewController.xib */; };
+		C7B51A991CC9FF0A00E675E9 /* AppDelegate+Share.m in Sources */ = {isa = PBXBuildFile; fileRef = C7B51A981CC9FF0A00E675E9 /* AppDelegate+Share.m */; };
+		C7B51AA71CD329FB00E675E9 /* LogInViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C7B51AA51CD329FB00E675E9 /* LogInViewController.m */; };
+		C7B51AA81CD329FB00E675E9 /* LogInViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C7B51AA61CD329FB00E675E9 /* LogInViewController.xib */; };
 		C7B6322A1CBE4CF00091C9D2 /* AppDelegate+XBNetworkingMonitor.m in Sources */ = {isa = PBXBuildFile; fileRef = C7B632291CBE4CF00091C9D2 /* AppDelegate+XBNetworkingMonitor.m */; };
 		C7B632A21CC092D90091C9D2 /* AppDelegate+UploadPlayTime.m in Sources */ = {isa = PBXBuildFile; fileRef = C7B632A11CC092D90091C9D2 /* AppDelegate+UploadPlayTime.m */; };
 		C7B632AB1CC4AC310091C9D2 /* WebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C7B632A91CC4AC310091C9D2 /* WebViewController.m */; };
@@ -69,8 +72,6 @@
 		C7EF9C8F1C02BCCD001326D8 /* SignViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C7EF9C871C02BCCD001326D8 /* SignViewController.xib */; };
 		C7F1228B1C070C190001F2AF /* Tool.m in Sources */ = {isa = PBXBuildFile; fileRef = C7F1228A1C070C190001F2AF /* Tool.m */; };
 		C7F1228E1C070C300001F2AF /* ReloadView.m in Sources */ = {isa = PBXBuildFile; fileRef = C7F1228D1C070C300001F2AF /* ReloadView.m */; };
-		C7F122951C070E5D0001F2AF /* LogInViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C7F122901C070E5D0001F2AF /* LogInViewController.m */; };
-		C7F122961C070E5D0001F2AF /* LogInViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C7F122911C070E5D0001F2AF /* LogInViewController.xib */; };
 		C7F122971C070E5D0001F2AF /* RegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C7F122931C070E5D0001F2AF /* RegisterViewController.m */; };
 		C7F122981C070E5D0001F2AF /* RegisterViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C7F122941C070E5D0001F2AF /* RegisterViewController.xib */; };
 		C7F37DFC1C3122B6005DA488 /* MyTraceTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C7F37DFA1C3122B6005DA488 /* MyTraceTableViewCell.m */; };
@@ -123,6 +124,11 @@
 		C776E4701C4F73990005DBF2 /* TestViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestViewController.h; sourceTree = "<group>"; };
 		C776E4711C4F73990005DBF2 /* TestViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestViewController.m; sourceTree = "<group>"; };
 		C776E4721C4F73990005DBF2 /* TestViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TestViewController.xib; sourceTree = "<group>"; };
+		C7B51A971CC9FF0A00E675E9 /* AppDelegate+Share.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AppDelegate+Share.h"; sourceTree = "<group>"; };
+		C7B51A981CC9FF0A00E675E9 /* AppDelegate+Share.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AppDelegate+Share.m"; sourceTree = "<group>"; };
+		C7B51AA41CD329FB00E675E9 /* LogInViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LogInViewController.h; path = ../../../Desktop/LogInViewController.h; sourceTree = "<group>"; };
+		C7B51AA51CD329FB00E675E9 /* LogInViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LogInViewController.m; path = ../../../Desktop/LogInViewController.m; sourceTree = "<group>"; };
+		C7B51AA61CD329FB00E675E9 /* LogInViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = LogInViewController.xib; path = ../../../Desktop/LogInViewController.xib; sourceTree = "<group>"; };
 		C7B632281CBE4CF00091C9D2 /* AppDelegate+XBNetworkingMonitor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AppDelegate+XBNetworkingMonitor.h"; sourceTree = "<group>"; };
 		C7B632291CBE4CF00091C9D2 /* AppDelegate+XBNetworkingMonitor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AppDelegate+XBNetworkingMonitor.m"; sourceTree = "<group>"; };
 		C7B632A01CC092D90091C9D2 /* AppDelegate+UploadPlayTime.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AppDelegate+UploadPlayTime.h"; sourceTree = "<group>"; };
@@ -211,9 +217,6 @@
 		C7F1228A1C070C190001F2AF /* Tool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Tool.m; sourceTree = "<group>"; };
 		C7F1228C1C070C300001F2AF /* ReloadView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReloadView.h; sourceTree = "<group>"; };
 		C7F1228D1C070C300001F2AF /* ReloadView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReloadView.m; sourceTree = "<group>"; };
-		C7F1228F1C070E5D0001F2AF /* LogInViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LogInViewController.h; sourceTree = "<group>"; };
-		C7F122901C070E5D0001F2AF /* LogInViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LogInViewController.m; sourceTree = "<group>"; };
-		C7F122911C070E5D0001F2AF /* LogInViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LogInViewController.xib; sourceTree = "<group>"; };
 		C7F122921C070E5D0001F2AF /* RegisterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegisterViewController.h; sourceTree = "<group>"; };
 		C7F122931C070E5D0001F2AF /* RegisterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegisterViewController.m; sourceTree = "<group>"; };
 		C7F122941C070E5D0001F2AF /* RegisterViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RegisterViewController.xib; sourceTree = "<group>"; };
@@ -389,6 +392,8 @@
 				C7B632291CBE4CF00091C9D2 /* AppDelegate+XBNetworkingMonitor.m */,
 				C7B632A01CC092D90091C9D2 /* AppDelegate+UploadPlayTime.h */,
 				C7B632A11CC092D90091C9D2 /* AppDelegate+UploadPlayTime.m */,
+				C7B51A971CC9FF0A00E675E9 /* AppDelegate+Share.h */,
+				C7B51A981CC9FF0A00E675E9 /* AppDelegate+Share.m */,
 			);
 			name = Category;
 			sourceTree = "<group>";
@@ -547,10 +552,10 @@
 		C7F392F21C05AA8300BC4EA2 /* Login&Register */ = {
 			isa = PBXGroup;
 			children = (
+				C7B51AA41CD329FB00E675E9 /* LogInViewController.h */,
+				C7B51AA51CD329FB00E675E9 /* LogInViewController.m */,
+				C7B51AA61CD329FB00E675E9 /* LogInViewController.xib */,
 				C7E57CF61C08040400BF5C3B /* CountDownButton */,
-				C7F1228F1C070E5D0001F2AF /* LogInViewController.h */,
-				C7F122901C070E5D0001F2AF /* LogInViewController.m */,
-				C7F122911C070E5D0001F2AF /* LogInViewController.xib */,
 				C7F122921C070E5D0001F2AF /* RegisterViewController.h */,
 				C7F122931C070E5D0001F2AF /* RegisterViewController.m */,
 				C7F122941C070E5D0001F2AF /* RegisterViewController.xib */,
@@ -816,6 +821,7 @@
 				C7F37DFD1C3122B6005DA488 /* MyTraceTableViewCell.xib in Resources */,
 				C7F122981C070E5D0001F2AF /* RegisterViewController.xib in Resources */,
 				C7B632AC1CC4AC310091C9D2 /* WebViewController.xib in Resources */,
+				C7B51AA81CD329FB00E675E9 /* LogInViewController.xib in Resources */,
 				C7E660891C53895E009DBA77 /* TestResultViewController.xib in Resources */,
 				C7FD71C61BF97DD200437DB6 /* Main.storyboard in Resources */,
 				C70038B11BFB190D0043A247 /* MenuViewController.xib in Resources */,
@@ -827,7 +833,6 @@
 				C7C89E141CB4A1FD00B6DF10 /* GetCountViewController.xib in Resources */,
 				C776E4741C4F73990005DBF2 /* TestViewController.xib in Resources */,
 				C7EF9C8F1C02BCCD001326D8 /* SignViewController.xib in Resources */,
-				C7F122961C070E5D0001F2AF /* LogInViewController.xib in Resources */,
 				C7E7D0871C0BDE47006D896B /* OpinionViewController.xib in Resources */,
 				C7FA57B91C1FF97900B12B85 /* CollectionCell.xib in Resources */,
 				C7FD71C81BF97DD200437DB6 /* Images.xcassets in Resources */,
@@ -919,12 +924,14 @@
 				C7B632A21CC092D90091C9D2 /* AppDelegate+UploadPlayTime.m in Sources */,
 				C7B632FD1CC60A990091C9D2 /* SSVideoPlaySlider.m in Sources */,
 				C7B632F71CC5CA160091C9D2 /* CircleView.m in Sources */,
+				C7B51A991CC9FF0A00E675E9 /* AppDelegate+Share.m in Sources */,
 				C7C89DF91CA50A0E00B6DF10 /* AnimationView.m in Sources */,
 				C7C89E181CB6282C00B6DF10 /* FirstViewController.m in Sources */,
 				C704DCEE1C4C992500038CA4 /* CollegeListtableview.m in Sources */,
 				C7E7D07D1C0BDDDD006D896B /* SettingTableViewController.m in Sources */,
 				C7FD71C01BF97DD200437DB6 /* AppDelegate.m in Sources */,
 				C7E660791C50C79D009DBA77 /* TestResultModel.m in Sources */,
+				C7B51AA71CD329FB00E675E9 /* LogInViewController.m in Sources */,
 				C7B632AB1CC4AC310091C9D2 /* WebViewController.m in Sources */,
 				C7C89E211CB8C59200B6DF10 /* KSGuideManager.m in Sources */,
 				C7F6B19D1C0DA7B70021BABC /* ChaptersModel.m in Sources */,
@@ -940,7 +947,6 @@
 				C7FD71E31BF97FF200437DB6 /* VideoViewController.m in Sources */,
 				C7F9320B1BFD999600B48489 /* HVWLuckyWheelButton.m in Sources */,
 				C7EF9C771C02BC95001326D8 /* PersonInfo.m in Sources */,
-				C7F122951C070E5D0001F2AF /* LogInViewController.m in Sources */,
 				C7FA57BC1C2009B900B12B85 /* CollectionModel.m in Sources */,
 				C7E660841C5382B4009DBA77 /* NSString+ITTAddtion.m in Sources */,
 				C7FA57B81C1FF97900B12B85 /* CollectionCell.m in Sources */,

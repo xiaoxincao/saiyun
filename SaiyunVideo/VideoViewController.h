@@ -39,6 +39,9 @@
 @property (strong, nonatomic) IBOutlet UILabel *TeacherDetailLabel;//老师简介
 @property (strong, nonatomic) IBOutlet UIButton *upMenuBtn;
 @property (strong, nonatomic) IBOutlet SliderView *progressSliderView;
+
+@property (weak, nonatomic) IBOutlet UIView *fourplaybtn;
+
 @property (strong, nonatomic)VideoView *videoview;
 @property (strong, nonatomic)ADView *clearview;
 @property (strong,nonatomic)NSTimer *timer;
@@ -54,9 +57,6 @@
 @property(nonatomic,assign)CGFloat systemVolume;//系统音量
 @property(nonatomic,strong)UISlider *volumeViewSlider;//声音调节
 @property (nonatomic,strong) VideoPlayer *player;
-//@property (strong, nonatomic) AVPlayer *player;//播放器对象
-//@property (strong, nonatomic)AVPlayerLayer *playerLayer;
-//@property(nonatomic,strong)AVPlayerItem *playerItem; // 播放属性
 
 singleton_interface(VideoViewController)
 

@@ -100,12 +100,6 @@ static Tool *tool;
     [progressHud show:NO];
 }
 
-- (void)showHUD:(HUDShowType)type
-{
-    if (type <= HUDShowType_None)
-        return;
-    [self showprogress];
-}
 
 
 + (BOOL)checkConectedWhileFaildShowReloadViewInView:

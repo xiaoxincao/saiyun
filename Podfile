@@ -9,3 +9,4 @@ pod’SDWebImage’,’~>3.7.3’
 pod’JSONModel’,’~>1.1.0’
 pod’Masonry’,’~>0.6.3’
 pod’MJExtension’,’~>3.0.7’
+pod 'shareSDK', '~> 0.0.2'

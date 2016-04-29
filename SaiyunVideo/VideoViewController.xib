@@ -12,6 +12,7 @@
                 <outlet property="CircleClassifyLabel" destination="WG7-hA-Gcg" id="eOW-6A-7IP"/>
                 <outlet property="TeacherDetailLabel" destination="bcz-6V-DJy" id="fAb-J3-oX3"/>
                 <outlet property="chapterBtnproperty" destination="qFq-8r-Uup" id="D6S-gm-k5E"/>
+                <outlet property="fourplaybtn" destination="Wmt-Us-jhb" id="tNH-Ki-KKs"/>
                 <outlet property="lastBtnproperty" destination="RkF-zp-gz1" id="2yH-Mk-zDL"/>
                 <outlet property="nextBtnproperty" destination="Mdf-wS-Xmp" id="DT5-9y-Yzd"/>
                 <outlet property="playproperty" destination="Fww-fv-a8g" id="pvF-pe-wX3"/>

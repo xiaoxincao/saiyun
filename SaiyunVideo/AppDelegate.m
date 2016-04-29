@@ -10,6 +10,7 @@
 #import "AppDelegate+UploadPlayTime.h"
 #import "LogInViewController.h"
 #import "GuideViewController.h"
+#import <shareSDKConstants.h>
 
 @interface AppDelegate ()<UIAlertViewDelegate>
 

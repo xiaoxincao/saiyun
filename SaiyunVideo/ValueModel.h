@@ -51,7 +51,7 @@
 
 @property (nonatomic, copy)NSString *playTime;//视频时长
 
-@property (nonatomic, copy)NSString *lastStudyTime;
+@property (nonatomic, assign)NSInteger lastStudyTime;
 
 @property (nonatomic, copy)NSString *fullFilePath;//视频路径
 
