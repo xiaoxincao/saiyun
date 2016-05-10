@@ -20,7 +20,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="输入验证码" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="DBJ-zy-JJx">
-                    <rect key="frame" x="13" y="133" width="461" height="50"/>
+                    <rect key="frame" x="13" y="133" width="441" height="50"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="50" id="6NT-H2-UCt"/>
                     </constraints>
@@ -28,10 +28,10 @@
                     <textInputTraits key="textInputTraits"/>
                 </textField>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vlx-Hu-jW1" customClass="JKCountDownButton">
-                    <rect key="frame" x="487" y="133" width="100" height="50"/>
+                    <rect key="frame" x="467" y="133" width="120" height="50"/>
                     <color key="backgroundColor" red="0.89717631980000001" green="0.89717631980000001" blue="0.89717631980000001" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="100" id="lhA-51-LWm"/>
+                        <constraint firstAttribute="width" constant="120" id="6k4-aH-Drz"/>
                         <constraint firstAttribute="height" constant="50" id="mz1-UN-OYO"/>
                     </constraints>
                     <state key="normal" title="获取验证码">

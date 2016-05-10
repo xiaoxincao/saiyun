@@ -89,7 +89,6 @@
     ValueModel *model = sectionModel.value[indexPath.row];
     NSString * tempStr = [NSString stringWithFormat:@"%ld-%@",(long)indexPath.row+1,model.name];
     cell.textLabel.text = tempStr;
-
     cell.detailTextLabel.text = model.playTime;
     cell.textLabel.font = [UIFont systemFontOfSize:15];
     if(model.lastStudyTime)

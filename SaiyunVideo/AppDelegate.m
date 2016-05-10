@@ -41,7 +41,7 @@
                          initWithCenterViewController:nav1
                          leftDrawerViewController:nav2
                          rightDrawerViewController:nil];
-    [_drawerController setMaximumLeftDrawerWidth:[[UIScreen mainScreen] bounds].size.width -100.0f];
+    [_drawerController setMaximumLeftDrawerWidth:[[UIScreen mainScreen] bounds].size.width -60.0f];
     [_drawerController setOpenDrawerGestureModeMask:MMOpenDrawerGestureModeAll];
     [_drawerController setCloseDrawerGestureModeMask:MMCloseDrawerGestureModeAll];
     

@@ -156,15 +156,19 @@ singleton_implementation(VideoViewController)
                                                  name:UIApplicationDidChangeStatusBarFrameNotification
                                                object:nil
      ];
-    
+    [self.mm_drawerController setOpenDrawerGestureModeMask:MMOpenDrawerGestureModeAll];
+    [self.mm_drawerController setCloseDrawerGestureModeMask:MMCloseDrawerGestureModeAll];
 }
-
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [self.mm_drawerController setOpenDrawerGestureModeMask:MMOpenDrawerGestureModeNone];
+    [self.mm_drawerController setCloseDrawerGestureModeMask:MMCloseDrawerGestureModeNone];
+}
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    //只有此界面可以侧滑
-    [self.mm_drawerController setOpenDrawerGestureModeMask:MMOpenDrawerGestureModeNone];
-    [self.mm_drawerController setCloseDrawerGestureModeMask:MMCloseDrawerGestureModeNone];
+
+    
     [[NSUserDefaults standardUserDefaults]setBool:NO forKey:@"ISNOTICE"];
     [[NSUserDefaults standardUserDefaults]synchronize];
     
@@ -282,6 +286,8 @@ singleton_implementation(VideoViewController)
     self.player.playerLayer.frame = CGRectMake(0, 0, kScreenWidth, kVideoHeight);
     self.BGimageView.frame = CGRectMake(0, 0, kScreenWidth, kScreenHeight);
     self.circleview.center =  self.videoview.center;
+    self.BGimageView.center = self.videoview.center;
+    self.blackview.center = self.videoview.center;
     self.navigationController.navigationBar.hidden = NO;
     self.CircleClassifyLabel.hidden = NO;
     self.ChapterNameLabel.hidden = NO;
@@ -726,11 +732,16 @@ singleton_implementation(VideoViewController)
 #pragma mark---- 添加点击显示圆环的手势
 - (void)Gesture{
     [self.videoview addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showcircleview:)]];
+    [self.view addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hiddechapterview:)]];
+}
+
+- (void)hiddechapterview:(UITapGestureRecognizer *)sender
+{
+    self.chaptertableview.hidden = YES;
 }
 
 #pragma mark---- 显示圆环
 - (void)showcircleview:(UITapGestureRecognizer *)sender{
-
     self.circleview.hidden = NO;
     self.blackview.hidden = NO;
     if (self.isFull) {
@@ -1067,11 +1078,6 @@ singleton_implementation(VideoViewController)
 #pragma mark - VideoPlayerDelegate
 //监听toplay时 ，准备播放视频
 - (void)videoPlayerDidReadyPlay:(VideoPlayer *)videoPlayer {
-//    __weak typeof(self) weakSelf = self;
-//     CMTime dragedCMTime = CMTimeMake(7, 1);
-//    [weakSelf.player.player seekToTime:dragedCMTime completionHandler:^(BOOL finish){
-//        [weakSelf.player.player play];
-//    }];
     NSLog(@"准备播放视频");
     [self.player play];
     self.timer = [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(timeAction) userInfo:nil repeats:YES];

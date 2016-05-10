@@ -18,8 +18,8 @@
 		C776E4731C4F73990005DBF2 /* TestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C776E4711C4F73990005DBF2 /* TestViewController.m */; };
 		C776E4741C4F73990005DBF2 /* TestViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C776E4721C4F73990005DBF2 /* TestViewController.xib */; };
 		C7B51A991CC9FF0A00E675E9 /* AppDelegate+Share.m in Sources */ = {isa = PBXBuildFile; fileRef = C7B51A981CC9FF0A00E675E9 /* AppDelegate+Share.m */; };
-		C7B51AA71CD329FB00E675E9 /* LogInViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C7B51AA51CD329FB00E675E9 /* LogInViewController.m */; };
-		C7B51AA81CD329FB00E675E9 /* LogInViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C7B51AA61CD329FB00E675E9 /* LogInViewController.xib */; };
+		C7B51AB41CD8368100E675E9 /* LogInViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C7B51AB21CD8368100E675E9 /* LogInViewController.m */; };
+		C7B51AB51CD8368100E675E9 /* LogInViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C7B51AB31CD8368100E675E9 /* LogInViewController.xib */; };
 		C7B6322A1CBE4CF00091C9D2 /* AppDelegate+XBNetworkingMonitor.m in Sources */ = {isa = PBXBuildFile; fileRef = C7B632291CBE4CF00091C9D2 /* AppDelegate+XBNetworkingMonitor.m */; };
 		C7B632A21CC092D90091C9D2 /* AppDelegate+UploadPlayTime.m in Sources */ = {isa = PBXBuildFile; fileRef = C7B632A11CC092D90091C9D2 /* AppDelegate+UploadPlayTime.m */; };
 		C7B632AB1CC4AC310091C9D2 /* WebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C7B632A91CC4AC310091C9D2 /* WebViewController.m */; };
@@ -126,9 +126,9 @@
 		C776E4721C4F73990005DBF2 /* TestViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TestViewController.xib; sourceTree = "<group>"; };
 		C7B51A971CC9FF0A00E675E9 /* AppDelegate+Share.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AppDelegate+Share.h"; sourceTree = "<group>"; };
 		C7B51A981CC9FF0A00E675E9 /* AppDelegate+Share.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AppDelegate+Share.m"; sourceTree = "<group>"; };
-		C7B51AA41CD329FB00E675E9 /* LogInViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LogInViewController.h; path = ../../../Desktop/LogInViewController.h; sourceTree = "<group>"; };
-		C7B51AA51CD329FB00E675E9 /* LogInViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LogInViewController.m; path = ../../../Desktop/LogInViewController.m; sourceTree = "<group>"; };
-		C7B51AA61CD329FB00E675E9 /* LogInViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = LogInViewController.xib; path = ../../../Desktop/LogInViewController.xib; sourceTree = "<group>"; };
+		C7B51AB11CD8368100E675E9 /* LogInViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LogInViewController.h; sourceTree = "<group>"; };
+		C7B51AB21CD8368100E675E9 /* LogInViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LogInViewController.m; sourceTree = "<group>"; };
+		C7B51AB31CD8368100E675E9 /* LogInViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LogInViewController.xib; sourceTree = "<group>"; };
 		C7B632281CBE4CF00091C9D2 /* AppDelegate+XBNetworkingMonitor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AppDelegate+XBNetworkingMonitor.h"; sourceTree = "<group>"; };
 		C7B632291CBE4CF00091C9D2 /* AppDelegate+XBNetworkingMonitor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AppDelegate+XBNetworkingMonitor.m"; sourceTree = "<group>"; };
 		C7B632A01CC092D90091C9D2 /* AppDelegate+UploadPlayTime.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AppDelegate+UploadPlayTime.h"; sourceTree = "<group>"; };
@@ -552,10 +552,10 @@
 		C7F392F21C05AA8300BC4EA2 /* Login&Register */ = {
 			isa = PBXGroup;
 			children = (
-				C7B51AA41CD329FB00E675E9 /* LogInViewController.h */,
-				C7B51AA51CD329FB00E675E9 /* LogInViewController.m */,
-				C7B51AA61CD329FB00E675E9 /* LogInViewController.xib */,
 				C7E57CF61C08040400BF5C3B /* CountDownButton */,
+				C7B51AB11CD8368100E675E9 /* LogInViewController.h */,
+				C7B51AB21CD8368100E675E9 /* LogInViewController.m */,
+				C7B51AB31CD8368100E675E9 /* LogInViewController.xib */,
 				C7F122921C070E5D0001F2AF /* RegisterViewController.h */,
 				C7F122931C070E5D0001F2AF /* RegisterViewController.m */,
 				C7F122941C070E5D0001F2AF /* RegisterViewController.xib */,
@@ -821,7 +821,7 @@
 				C7F37DFD1C3122B6005DA488 /* MyTraceTableViewCell.xib in Resources */,
 				C7F122981C070E5D0001F2AF /* RegisterViewController.xib in Resources */,
 				C7B632AC1CC4AC310091C9D2 /* WebViewController.xib in Resources */,
-				C7B51AA81CD329FB00E675E9 /* LogInViewController.xib in Resources */,
+				C7B51AB51CD8368100E675E9 /* LogInViewController.xib in Resources */,
 				C7E660891C53895E009DBA77 /* TestResultViewController.xib in Resources */,
 				C7FD71C61BF97DD200437DB6 /* Main.storyboard in Resources */,
 				C70038B11BFB190D0043A247 /* MenuViewController.xib in Resources */,
@@ -931,7 +931,7 @@
 				C7E7D07D1C0BDDDD006D896B /* SettingTableViewController.m in Sources */,
 				C7FD71C01BF97DD200437DB6 /* AppDelegate.m in Sources */,
 				C7E660791C50C79D009DBA77 /* TestResultModel.m in Sources */,
-				C7B51AA71CD329FB00E675E9 /* LogInViewController.m in Sources */,
+				C7B51AB41CD8368100E675E9 /* LogInViewController.m in Sources */,
 				C7B632AB1CC4AC310091C9D2 /* WebViewController.m in Sources */,
 				C7C89E211CB8C59200B6DF10 /* KSGuideManager.m in Sources */,
 				C7F6B19D1C0DA7B70021BABC /* ChaptersModel.m in Sources */,
@@ -1017,8 +1017,8 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -1040,7 +1040,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "7e75fb4a-b304-4ba6-8bf4-673e74a8ede5";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -1063,8 +1063,8 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
@@ -1079,7 +1079,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
 				MTL_ENABLE_DEBUG_INFO = NO;
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "7e75fb4a-b304-4ba6-8bf4-673e74a8ede5";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;

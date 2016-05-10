@@ -22,10 +22,8 @@
 
 - (void)request
 {
-    NSString *urlstr = @"http://www.cying.com.cn";
-    
     //创建url
-    NSURL *url = [NSURL URLWithString:urlstr];
+    NSURL *url = [NSURL URLWithString:Company];
     //创建请求
     NSURLRequest *request=[NSURLRequest requestWithURL:url];
     
@@ -38,15 +36,5 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end

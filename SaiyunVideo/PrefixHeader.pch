@@ -56,11 +56,12 @@
 //#define PersonPort @"http://192.168.1.99"
 //#define Video_Path @"http://192.168.1.60:5080/Mooc/"//视频播放路径前缀
 
-#define Portt @"http://www.easyrun.com.cn:8899"
-#define Port @"http://www.easyrun.com.cn:8899"
-#define PersonPort @"http://www.easyrun.com.cn:8899"
-#define Video_Path @"http://www.easyrun.com.cn:5080/Mooc/"
-#define Subtitle_Path @"http://www.easyrun.com.cn:5080/Mooc/caption/"//视频字幕加载路径
+#define Company @"http://yungu.cying.com.cn"
+#define Portt @"http://yungu.cying.com.cn"
+#define Port @"http://yungu.cying.com.cn"
+#define PersonPort @"http://yungu.cying.com.cn"
+#define Video_Path @"http://yungu.mooc.cying.com.cn:5080/Mooc/"
+#define Subtitle_Path @"http://yungu.mooc.cying.com.cn:5080/Mooc/caption/"//视频字幕加载路径
 
 
 #pragma mark ------------------- 注册登录！！！
@@ -70,6 +71,7 @@
 #define String_RegisterForApp [PersonPort stringByAppendingString:@"/e-base/common/register/yungu/regiesterForApp"]
 /**验证码(手机号-phoneNumber) */
 #define String_RegisterCode [PersonPort stringByAppendingString:@"/e-base/common/sendsms/appSend"]
+#define LoginAPI [Portt stringByAppendingString:@"/cas/login?glt=true"]//登录接口
 
 /** 获取用户信息 */
 #define GetUserInfo [PersonPort stringByAppendingString: @"/e-base/app/profile"]
@@ -87,7 +89,7 @@
 
 
 
-#define LoginAPI [Portt stringByAppendingString:@"/cas/login?glt=true"]//登录接口
+
 /** CAS用户登出 */
 #define Outlogin [Portt stringByAppendingString:@"/cas/logout?glt=true"]
 /** 当前应用登出 */

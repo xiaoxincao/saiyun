@@ -73,6 +73,15 @@
     NSDictionary *dict = @{@"phone_no":self.phonetext.text,@"checkCode":self.Verificationcode.text,@"userpass":self.codetext.text};
     [[NetworkSingleton sharedManager]postResultWithParameter:dict url:UpCode successBlock:^(id responseBody) {
         NSLog(@"修改是否成功--%@",responseBody);
+        if ([responseBody[@"success"] isEqual:@1]) {
+            LogInViewController *log = [[LogInViewController alloc]init];
+            [self.navigationController pushViewController:log animated:YES];
+        }
+        else
+        {
+            [[Tool SharedInstance]showtoast:responseBody[@"msg"]];
+        }
+       
     } failureBlock:^(NSString *error) {
         
     }];

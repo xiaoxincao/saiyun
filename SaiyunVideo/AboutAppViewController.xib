@@ -18,10 +18,22 @@
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="welcome" translatesAutoresizingMaskIntoConstraints="NO" id="kXj-YP-zVT">
                     <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                 </imageView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="赛云九洲科技股份有限公司" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vmZ-Yi-yZa">
+                    <rect key="frame" x="197" y="559" width="207" height="21"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="21" id="rZC-B4-EVf"/>
+                        <constraint firstAttribute="width" constant="207" id="wmw-Wk-qWH"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
+                <constraint firstAttribute="bottom" secondItem="vmZ-Yi-yZa" secondAttribute="bottom" constant="20" id="4t7-bG-XCk"/>
                 <constraint firstAttribute="trailing" secondItem="kXj-YP-zVT" secondAttribute="trailing" id="caG-85-LiH"/>
+                <constraint firstItem="vmZ-Yi-yZa" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="e6t-eo-lUf"/>
                 <constraint firstAttribute="bottom" secondItem="kXj-YP-zVT" secondAttribute="bottom" id="geW-XX-xLu"/>
                 <constraint firstItem="kXj-YP-zVT" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="hd5-nq-PAT"/>
                 <constraint firstItem="kXj-YP-zVT" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="pV4-Vd-FKB"/>

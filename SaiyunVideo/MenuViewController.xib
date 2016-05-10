@@ -44,7 +44,7 @@
                             <nil key="highlightedColor"/>
                         </label>
                     </subviews>
-                    <color key="backgroundColor" red="0.43529411759999997" green="0.4431372549" blue="0.47450980390000003" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="250" id="3fF-aI-bWL"/>
                         <constraint firstItem="iXa-dH-LkM" firstAttribute="top" secondItem="NlI-LC-CG2" secondAttribute="bottom" constant="10" id="GbT-Oq-Jum"/>
@@ -59,7 +59,7 @@
                 </tableView>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Iu0-u9-09c">
                     <rect key="frame" x="7" y="553" width="586" height="40"/>
-                    <color key="backgroundColor" red="0.24456934556834692" green="0.66666666666666663" blue="0.64230741785820344" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="backgroundColor" red="0.39723482898163776" green="0.63650887173153525" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="40" id="Qb9-Qc-rSu"/>
                     </constraints>
